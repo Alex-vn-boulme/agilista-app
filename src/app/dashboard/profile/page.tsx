@@ -22,6 +22,8 @@ type ProfileData = {
   id: string;
   name: string;
   full_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone: string;
   company: string;
@@ -111,6 +113,15 @@ export default function ProfilePage() {
 
   // Get first name and last name from profile data
   const getName = () => {
+    // Utiliser first_name et last_name s'ils sont disponibles
+    if (profile?.first_name || profile?.last_name) {
+      return {
+        firstName: profile?.first_name || "",
+        lastName: profile?.last_name || "",
+      };
+    }
+
+    // Sinon, fallback sur full_name ou name
     const nameParts = profile?.full_name?.split(" ") ||
       profile?.name?.split(" ") || ["", ""];
     return {

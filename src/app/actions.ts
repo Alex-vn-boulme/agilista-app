@@ -1,7 +1,7 @@
 "use server";
 
 import { encodedRedirect } from "@/utils/utils";
-import { redirect } from "next/navigation";
+import console from "console";
 import { createClient } from "../../supabase/server";
 
 export const signUpAction = async (formData: FormData) => {
@@ -65,7 +65,8 @@ export const signUpAction = async (formData: FormData) => {
       );
     }
 
-    // Inscription de l'utilisateur
+    // 1. Créer d'abord l'utilisateur dans auth.users
+    // en incluant les métadonnées
     const {
       data: { user },
       error,
@@ -74,88 +75,79 @@ export const signUpAction = async (formData: FormData) => {
       password,
       options: {
         data: {
-          first_name: firstName,
-          last_name: lastName,
-          full_name: fullName,
+          // Ces données vont dans les raw_user_meta_data de auth.users
+          name: firstName + " " + lastName,
           email: email,
         },
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/email-verified`,
+        emailRedirectTo: process.env.NEXT_PUBLIC_SITE_URL
+          ? `${process.env.NEXT_PUBLIC_SITE_URL}/email-verified`
+          : `/email-verified`,
       },
     });
 
     if (error) {
       console.log("Auth signup error:", error.message);
 
-      // Messages d'erreur personnalisés selon le type d'erreur
-      if (error.message.includes("email")) {
-        return encodedRedirect(
-          "error",
-          "/sign-up",
-          "Format d'email invalide ou déjà utilisé"
+      // Vérifier si l'erreur est liée à l'URL de redirection
+      if (error.message.includes("redirect") || error.message.includes("URL")) {
+        console.error(
+          "Redirection URL error:",
+          process.env.NEXT_PUBLIC_SITE_URL
         );
-      } else if (error.message.includes("password")) {
-        return encodedRedirect(
-          "error",
-          "/sign-up",
-          "Le mot de passe ne respecte pas les critères de sécurité"
-        );
-      } else {
-        return encodedRedirect("error", "/sign-up", error.message);
-      }
-    }
 
-    if (user) {
-      try {
-        // Insertion des données utilisateur dans la table users
-        const { error: updateError } = await supabase.from("users").insert({
-          id: user.id,
-          user_id: user.id,
-          name: fullName,
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          token_identifier: user.id,
-          role: "org_member",
-          status: "active",
-          plan: "free",
-          created_at: new Date().toISOString(),
-          raw_user_meta_data: {
-            first_name: firstName,
-            last_name: lastName,
+        // Réessayer sans URL de redirection si c'est la cause de l'erreur
+        const retrySignup = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name: firstName + " " + lastName,
+              email: email,
+            },
           },
         });
 
-        if (updateError) {
-          console.log("Error updating user:", updateError.message);
-
-          // Tentative de suppression de l'utilisateur en cas d'échec de l'insertion
-          await supabase.auth.admin.deleteUser(user.id);
-
+        if (retrySignup.error) {
           return encodedRedirect(
             "error",
             "/sign-up",
-            "Erreur lors de la création du profil. Veuillez réessayer."
+            "Erreur lors de l'inscription. Veuillez réessayer."
           );
         }
-      } catch (err) {
-        console.log("Exception in user update:", err);
 
-        // Tentative de suppression de l'utilisateur en cas d'erreur
-        await supabase.auth.admin.deleteUser(user.id);
-
-        return encodedRedirect(
-          "error",
-          "/sign-up",
-          "Erreur lors de la création du profil. Veuillez réessayer."
-        );
+        if (!retrySignup.data.user) {
+          return encodedRedirect(
+            "error",
+            "/sign-up",
+            "Erreur lors de l'inscription. Veuillez réessayer."
+          );
+        }
+      } else {
+        // Messages d'erreur personnalisés selon le type d'erreur
+        if (error.message.includes("email")) {
+          return encodedRedirect(
+            "error",
+            "/sign-up",
+            "Format d'email invalide ou déjà utilisé"
+          );
+        } else if (error.message.includes("password")) {
+          return encodedRedirect(
+            "error",
+            "/sign-up",
+            "Le mot de passe ne respecte pas les critères de sécurité"
+          );
+        } else {
+          return encodedRedirect("error", "/sign-up", error.message);
+        }
       }
-    } else {
-      return encodedRedirect(
-        "error",
-        "/sign-up",
-        "Erreur lors de la création du compte. Veuillez réessayer."
-      );
     }
+
+    // NOTE IMPORTANTE: Nous n'insérons plus manuellement dans la table users
+    // Cette opération est maintenant gérée par le trigger 'on_auth_user_created'
+    // défini dans les migrations SQL, qui copie les données de auth.users dans public.users
+
+    // Si nous arrivons ici, l'inscription a réussi
+    console.log("User created successfully:", email);
   } catch (error) {
     console.log("Unexpected error during signup:", error);
     return encodedRedirect(
@@ -166,12 +158,26 @@ export const signUpAction = async (formData: FormData) => {
   }
 
   // Rediriger vers la page de confirmation
-  return redirect(`/email-verification?email=${encodeURIComponent(email)}`);
+  console.log("Signup successful, redirecting to email verification page...");
+  return encodedRedirect(
+    "success",
+    "/email-verification",
+    `Inscription réussie. Un email de confirmation a été envoyé à ${email}`
+  );
 };
 
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+
+  if (!email || !password) {
+    return encodedRedirect(
+      "error",
+      "/sign-in",
+      "L'email et le mot de passe sont obligatoires"
+    );
+  }
+
   const supabase = await createClient();
 
   try {
@@ -200,193 +206,60 @@ export const signInAction = async (formData: FormData) => {
       );
     }
 
-    // Log user info to debug
-    console.log("User authenticated:", user.id);
-
-    // Get user role from the users table - try with both id and user_id
-    const { data: userData, error: userError } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", user.id)
-      .single();
-
-    if (userError) {
-      console.log("Error fetching user data by id:", userError.message);
-
-      // Try with user_id instead
-      const { data: userData2, error: userError2 } = await supabase
+    // Vérifier le statut de l'utilisateur - Corriger la requête en vérifiant par ID et non par user_id
+    try {
+      // Tenter d'abord avec user_id
+      const { data: userData, error: userError } = await supabase
         .from("users")
-        .select("*")
+        .select("status")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
 
-      if (userError2) {
-        console.log("Error fetching user data by user_id:", userError2.message);
-        return encodedRedirect(
-          "error",
-          "/sign-in",
-          "Erreur lors de la récupération des données utilisateur"
-        );
-      }
+      // Si la première tentative échoue, essayer avec id
+      if (userError || !userData) {
+        const { data: userDataById, error: userErrorById } = await supabase
+          .from("users")
+          .select("status")
+          .eq("id", user.id)
+          .maybeSingle();
 
-      if (!userData2) {
-        // Create user record if missing
-        const { error: insertError } = await supabase.from("users").insert({
-          id: user.id,
-          user_id: user.id,
-          email: user.email,
-          token_identifier: user.id,
-          role: "org_member",
-          status: "active",
-          plan: "free",
-          created_at: new Date().toISOString(),
-        });
-
-        if (insertError) {
-          console.log("Error creating user record:", insertError.message);
+        // Si les deux tentatives échouent, considérer l'utilisateur comme actif
+        if (userErrorById || !userDataById) {
+          console.log(
+            "Utilisateur non trouvé dans la table users, mais authentifié. Considéré comme actif."
+          );
+        } else if (userDataById?.status === "inactive") {
           return encodedRedirect(
             "error",
             "/sign-in",
-            "Erreur lors de la création du profil utilisateur"
+            "Votre compte a été désactivé. Veuillez contacter le support."
           );
         }
-
-        return redirect("/dashboard");
+      } else if (userData?.status === "inactive") {
+        return encodedRedirect(
+          "error",
+          "/sign-in",
+          "Votre compte a été désactivé. Veuillez contacter le support."
+        );
       }
-
-      // Redirect based on role from userData2
-      if (userData2.role === "org_member" || userData2.role === "org_admin") {
-        return redirect("/dashboard");
-      }
-
-      if (userData2.role === "platform_admin") {
-        return redirect("/admin/dashboard");
-      }
+    } catch (userQueryError) {
+      console.error("Error querying user status:", userQueryError);
+      // Ne pas bloquer la connexion en cas d'erreur de vérification du statut
+      // Laisser l'utilisateur se connecter quand même
     }
 
-    if (!userData) {
-      return encodedRedirect(
-        "error",
-        "/sign-in",
-        "Profil utilisateur introuvable"
-      );
-    }
+    // Tentative de redirection vers le dashboard avec URL complète et sans query params
+    // Utiliser le chemin relatif pour éviter les problèmes de redirection cross-origin
+    console.log("Authentication successful, redirecting to dashboard...");
 
-    // Redirect based on role from userData
-    if (userData.role === "org_member" || userData.role === "org_admin") {
-      return redirect("/dashboard");
-    }
-
-    if (userData.role === "platform_admin") {
-      return redirect("/admin/dashboard");
-    }
-
-    // For any other role or if role is not set
-    return encodedRedirect("error", "/sign-in", "Accès non autorisé");
+    // Utiliser encodedRedirect pour la redirection avec un statut "success"
+    return encodedRedirect("success", "/dashboard", "Connexion réussie");
   } catch (error) {
-    console.log("Unexpected error:", error);
+    console.error("Unexpected error during sign in:", error);
     return encodedRedirect(
       "error",
       "/sign-in",
-      "Une erreur s'est produite lors de la connexion"
+      "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
     );
   }
-};
-
-export const forgotPasswordAction = async (formData: FormData) => {
-  const email = formData.get("email")?.toString();
-  const supabase = await createClient();
-  // Get the base URL for reset password
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || "";
-  const redirectTo = `${origin}/reset-password`;
-
-  if (!email) {
-    return encodedRedirect(
-      "error",
-      "/forgot-password",
-      "L'email est obligatoire"
-    );
-  }
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: redirectTo,
-  });
-
-  if (error) {
-    return encodedRedirect(
-      "error",
-      "/forgot-password",
-      "Impossible de réinitialiser le mot de passe"
-    );
-  }
-
-  return encodedRedirect(
-    "success",
-    "/forgot-password",
-    "Vérifiez votre email pour un lien de réinitialisation de mot de passe."
-  );
-};
-
-export const resetPasswordAction = async (formData: FormData) => {
-  const supabase = await createClient();
-
-  const password = formData.get("password") as string;
-  const confirmPassword = formData.get("confirmPassword") as string;
-
-  if (!password || !confirmPassword) {
-    return encodedRedirect(
-      "error",
-      "/reset-password",
-      "Le mot de passe et sa confirmation sont obligatoires"
-    );
-  }
-
-  if (password !== confirmPassword) {
-    return encodedRedirect(
-      "error",
-      "/reset-password",
-      "Les mots de passe ne correspondent pas"
-    );
-  }
-
-  const { error } = await supabase.auth.updateUser({
-    password: password,
-  });
-
-  if (error) {
-    return encodedRedirect(
-      "error",
-      "/reset-password",
-      "La mise à jour du mot de passe a échoué"
-    );
-  }
-
-  return encodedRedirect(
-    "success",
-    "/sign-in",
-    "Mot de passe mis à jour avec succès. Vous pouvez maintenant vous connecter."
-  );
-};
-
-export const signOutAction = async () => {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  return redirect("/sign-in");
-};
-
-export const checkUserSubscription = async (userId: string) => {
-  const supabase = await createClient();
-
-  const { data: subscription, error } = await supabase
-    .from("subscriptions")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("status", "active")
-    .single();
-
-  if (error) {
-    return false;
-  }
-
-  return !!subscription;
 };
