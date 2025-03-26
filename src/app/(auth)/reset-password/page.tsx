@@ -1,16 +1,17 @@
-import { signInAction } from "@/app/actions";
+import { resetPasswordAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { BarChartIcon, BotIcon, PhoneIcon, Workflow } from "lucide-react";
+import { BotIcon, KeyRound, Lock, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
-interface LoginProps {
+interface ResetPasswordProps {
   searchParams: Promise<Message>;
 }
 
-export default async function SignInPage({ searchParams }: LoginProps) {
+export default async function ResetPassword({
+  searchParams,
+}: ResetPasswordProps) {
   const message = await searchParams;
 
   if ("message" in message) {
@@ -24,7 +25,7 @@ export default async function SignInPage({ searchParams }: LoginProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F8F7FF] p-4">
       <div className="w-full max-w-[1000px] rounded-xl bg-white p-8 shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Section - Login Form */}
+        {/* Left Section - Reset Password Form */}
         <div className="space-y-6">
           <div className="flex items-center gap-2 mb-8">
             <BotIcon className="w-8 h-8 text-[#7C3AED]" />
@@ -33,28 +34,18 @@ export default async function SignInPage({ searchParams }: LoginProps) {
 
           <div className="space-y-2">
             <h1 className="text-xl font-medium">
-              Bienvenue sur votre espace d'automatisation
+              Réinitialisez votre mot de passe
             </h1>
+            <p className="text-sm text-gray-600">
+              Veuillez entrer votre nouveau mot de passe ci-dessous
+            </p>
           </div>
 
           <form className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="block text-sm text-gray-600">
-                  Email professionnel
-                </label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="votreemail@entreprise.com"
-                  className="w-full h-11"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm text-gray-600">
-                  Mot de passe
+                  Nouveau mot de passe
                 </label>
                 <Input
                   type="password"
@@ -65,63 +56,70 @@ export default async function SignInPage({ searchParams }: LoginProps) {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Checkbox id="remember" />
-                  <label htmlFor="remember" className="text-sm text-gray-600">
-                    Se souvenir de moi
-                  </label>
-                </div>
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-[#7C3AED] hover:underline"
-                >
-                  Mot de passe oublié?
-                </Link>
+              <div className="space-y-2">
+                <label className="block text-sm text-gray-600">
+                  Confirmer le mot de passe
+                </label>
+                <Input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="••••••••"
+                  className="w-full h-11"
+                  required
+                />
               </div>
             </div>
 
             <SubmitButton
               className="w-full h-11 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-medium"
-              pendingText="Connexion en cours..."
-              formAction={signInAction}
+              pendingText="Réinitialisation en cours..."
+              formAction={resetPasswordAction}
             >
-              Se connecter
+              Réinitialiser
             </SubmitButton>
+
+            <div className="text-center text-sm">
+              <Link
+                className="text-[#7C3AED] font-medium hover:underline transition-all"
+                href="/sign-in"
+              >
+                Retour à la connexion
+              </Link>
+            </div>
           </form>
         </div>
 
-        {/* Right Section - Features */}
+        {/* Right Section - Security info */}
         <div className="bg-[#F8F7FF] rounded-lg p-6">
-          <h2 className="text-lg font-medium mb-6">Tableau de bord</h2>
+          <h2 className="text-lg font-medium mb-6">Sécurité du compte</h2>
 
           <div className="space-y-4">
             <div className="flex items-start gap-4 p-4 bg-white rounded-lg hover:shadow-md transition-shadow">
-              <BarChartIcon className="w-6 h-6 text-[#7C3AED]" />
+              <ShieldCheck className="w-6 h-6 text-[#7C3AED]" />
               <div>
-                <h3 className="font-medium">Vos statistiques</h3>
+                <h3 className="font-medium">Protection renforcée</h3>
                 <p className="text-sm text-gray-600">
-                  Accédez à vos analyses et performances
+                  Votre compte est protégé par des mesures de sécurité avancées
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4 p-4 bg-white rounded-lg hover:shadow-md transition-shadow">
-              <Workflow className="w-6 h-6 text-[#7C3AED]" />
+              <Lock className="w-6 h-6 text-[#7C3AED]" />
               <div>
-                <h3 className="font-medium">Automatisations actives</h3>
+                <h3 className="font-medium">Mot de passe fort</h3>
                 <p className="text-sm text-gray-600">
-                  Gérez vos workflows en temps réel
+                  Utilisez un mot de passe unique avec des caractères variés
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4 p-4 bg-white rounded-lg hover:shadow-md transition-shadow">
-              <PhoneIcon className="w-6 h-6 text-[#7C3AED]" />
+              <KeyRound className="w-6 h-6 text-[#7C3AED]" />
               <div>
-                <h3 className="font-medium">Support disponible</h3>
+                <h3 className="font-medium">Accès sécurisé</h3>
                 <p className="text-sm text-gray-600">
-                  Notre équipe est là pour vous aider
+                  Votre connexion est cryptée et sécurisée
                 </p>
               </div>
             </div>
