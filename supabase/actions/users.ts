@@ -3,8 +3,8 @@
 import type { Database } from "@/types/supabase";
 import { createClient } from "../server";
 
-type DbUser = Database["public"]["Tables"]["users"]["Row"];
-export type UserRole = Database["public"]["Tables"]["users"]["Row"]["role"];
+type DbUser = Database["public"]["Tables"]["profiles"]["Row"];
+export type UserRole = Database["public"]["Tables"]["user_roles"]["Row"];
 
 export type User = DbUser;
 

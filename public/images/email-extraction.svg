@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#F8F7FF"/>
+  
+  <!-- Email Interface -->
+  <rect x="100" y="100" width="600" height="400" rx="8" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <!-- Email Header -->
+  <rect x="120" y="120" width="560" height="40" rx="4" fill="#F1F5F9"/>
+  <rect x="140" y="130" width="200" height="20" rx="4" fill="#CBD5E1"/>
+  
+  <!-- Email Content -->
+  <rect x="140" y="180" width="520" height="20" rx="4" fill="#E2E8F0"/>
+  <rect x="140" y="220" width="400" height="20" rx="4" fill="#E2E8F0"/>
+  <rect x="140" y="260" width="480" height="20" rx="4" fill="#E2E8F0"/>
+  
+  <!-- Extraction Process -->
+  <path d="M400 300 L600 300" stroke="#7C3AED" stroke-width="2" stroke-dasharray="4 4"/>
+  <circle cx="600" cy="300" r="20" fill="#7C3AED"/>
+  <path d="M600 280 L620 300 L600 320" fill="white"/>
+  
+  <!-- Extracted Data -->
+  <rect x="620" y="250" width="160" height="100" rx="8" fill="white" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="640" y="270" width="120" height="20" rx="4" fill="#7C3AED" fill-opacity="0.1"/>
+  <rect x="640" y="310" width="120" height="20" rx="4" fill="#7C3AED" fill-opacity="0.1"/>
+</svg> 

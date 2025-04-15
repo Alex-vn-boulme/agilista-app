@@ -85,9 +85,28 @@ export default async function ProfileLayout({
       role: "user",
       status: "active",
       created_at: new Date().toISOString(),
+      organization_id: null,
     };
 
     console.log("Created minimal profile:", profile);
+  } else {
+    // Si un profil a été trouvé, chercher l'organisation associée si elle existe
+    if (profile.organization_id) {
+      try {
+        const { data: organizationData, error: orgError } = await supabase
+          .from("organizations")
+          .select("*")
+          .eq("id", profile.organization_id)
+          .single();
+
+        if (!orgError && organizationData) {
+          // Enrichir le profil avec les données de l'organisation
+          profile.organization = organizationData;
+        }
+      } catch (error) {
+        console.error("Error fetching organization data:", error);
+      }
+    }
   }
 
   // Make the profile available in page props using a hidden data attribute

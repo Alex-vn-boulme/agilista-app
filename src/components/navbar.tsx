@@ -12,7 +12,7 @@ export default async function Navbar() {
   } = await (await supabase).auth.getUser();
 
   return (
-    <nav className="w-full border-b border-gray-200 bg-white py-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link
           href="/"
@@ -44,10 +44,10 @@ export default async function Navbar() {
                 Se connecter
               </Link>
               <Link
-                href="/sign-up"
+                href="https://cal.com/rebecca-pari/30min"
                 className="px-4 py-2 text-sm font-medium text-white bg-[#7C3AED] rounded-md hover:bg-[#6D28D9] transition-colors"
               >
-                S'inscrire
+                Audit gratuit
               </Link>
             </>
           )}

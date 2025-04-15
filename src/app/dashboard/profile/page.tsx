@@ -20,27 +20,49 @@ import { updateProfile } from "../../../../supabase/actions/profile";
 
 type ProfileData = {
   id: string;
-  name: string;
-  full_name: string;
-  first_name: string;
-  last_name: string;
   email: string;
-  phone: string;
-  company: string;
-  industry: string;
-  address: string;
-  avatar_url: string;
+  first_name: string | null;
+  last_name: string | null;
+  phone: string | null;
+  profile_picture_url: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  last_sign_in_at: Date | null;
+  raw_user_meta_data: any;
+  raw_app_meta_data: any;
+};
+
+type TeamMember = {
+  id: string;
+  email: string;
+  first_name: string | null;
+  last_name: string | null;
+  profile_picture_url: string | null;
   role: string;
+};
+
+type Organisation = {
+  id: number;
+  name: string;
+  description: string | null;
+  address: string | null;
+  logo_url: string | null;
+  type: string | null;
+  status: string;
 };
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [organisation, setOrganisation] = useState<Organisation | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
-  const [avatarKey, setAvatarKey] = useState(0); // Key to force avatar refresh
+  const [avatarKey, setAvatarKey] = useState(0);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [isLoadingTeam, setIsLoadingTeam] = useState(true);
+  const [pendingInvites, setPendingInvites] = useState<any[]>([]);
 
-  // Get profile data from the data attribute
   useEffect(() => {
     const profileElement = document.querySelector("[data-profile]");
     if (profileElement) {
@@ -49,14 +71,66 @@ export default function ProfilePage() {
           profileElement.getAttribute("data-profile") || ""
         );
         setProfile(profileData);
-        if (profileData?.avatar_url) {
-          setAvatarUrl(profileData.avatar_url);
+        if (profileData?.profile_picture_url) {
+          setAvatarUrl(profileData.profile_picture_url);
+        }
+
+        // Charger les données de l'organisation si disponibles
+        if (profileData?.organisation_id) {
+          fetchOrganisationData(profileData.organisation_id);
+          fetchTeamMembers(profileData.organisation_id);
+          fetchPendingInvites(profileData.organisation_id);
+        } else {
+          setIsLoadingTeam(false);
         }
       } catch (e) {
         console.error("Error parsing profile data:", e);
+        setIsLoadingTeam(false);
       }
     }
   }, []);
+
+  const fetchOrganisationData = async (organisationId: number) => {
+    try {
+      const response = await fetch(`/api/organizations/${organisationId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setOrganisation(data.organisation);
+      }
+    } catch (error) {
+      console.error("Error fetching organisation data:", error);
+    }
+  };
+
+  const fetchTeamMembers = async (organisationId: number) => {
+    try {
+      const response = await fetch(
+        `/api/organizations/${organisationId}/members`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setTeamMembers(data.members || []);
+      }
+    } catch (error) {
+      console.error("Error fetching team members:", error);
+    } finally {
+      setIsLoadingTeam(false);
+    }
+  };
+
+  const fetchPendingInvites = async (organisationId: number) => {
+    try {
+      const response = await fetch(
+        `/api/organizations/${organisationId}/invitations`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setPendingInvites(data.invitations || []);
+      }
+    } catch (error) {
+      console.error("Error fetching pending invitations:", error);
+    }
+  };
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
@@ -71,18 +145,14 @@ export default function ProfilePage() {
     formData.append("avatar", file);
 
     try {
-      // Create a temporary URL for immediate display
       const tempUrl = URL.createObjectURL(file);
       setAvatarUrl(tempUrl);
 
-      // Upload the file and get the permanent URL
       const permanentUrl = await updateAvatar(formData);
       setAvatarUrl(permanentUrl);
-      setAvatarKey((prev) => prev + 1); // Force avatar refresh
+      setAvatarKey((prev) => prev + 1);
 
-      // Cleanup the temporary URL
       URL.revokeObjectURL(tempUrl);
-
       toast.success("Photo de profil mise à jour avec succès");
     } catch (error) {
       toast.error(
@@ -94,43 +164,16 @@ export default function ProfilePage() {
   };
 
   const getInitials = () => {
-    if (profile?.full_name) {
-      return profile.full_name
-        .split(" ")
-        .map((n) => n[0])
+    if (profile?.first_name || profile?.last_name) {
+      const initials = [profile.first_name, profile.last_name]
+        .filter(Boolean)
+        .map((n) => n?.[0])
         .join("")
         .toUpperCase();
-    }
-    if (profile?.name) {
-      return profile.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase();
+      return initials || "U";
     }
     return "U";
   };
-
-  // Get first name and last name from profile data
-  const getName = () => {
-    // Utiliser first_name et last_name s'ils sont disponibles
-    if (profile?.first_name || profile?.last_name) {
-      return {
-        firstName: profile?.first_name || "",
-        lastName: profile?.last_name || "",
-      };
-    }
-
-    // Sinon, fallback sur full_name ou name
-    const nameParts = profile?.full_name?.split(" ") ||
-      profile?.name?.split(" ") || ["", ""];
-    return {
-      firstName: nameParts[0] || "",
-      lastName: nameParts.slice(1).join(" ") || "",
-    };
-  };
-
-  const { firstName, lastName } = getName();
 
   if (!profile) {
     return (
@@ -148,6 +191,7 @@ export default function ProfilePage() {
             try {
               await updateProfile(formData);
               toast.success("Profil mis à jour avec succès");
+              window.location.reload();
             } catch (error) {
               toast.error(
                 error instanceof Error
@@ -203,94 +247,153 @@ export default function ProfilePage() {
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Prénom</Label>
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="first_name">Prénom</Label>
                     <Input
-                      name="firstName"
-                      defaultValue={firstName}
-                      placeholder="Votre prénom"
-                      required
+                      id="first_name"
+                      name="first_name"
+                      defaultValue={profile.first_name || ""}
+                      className="mt-2"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label>Nom</Label>
+                  <div>
+                    <Label htmlFor="last_name">Nom</Label>
                     <Input
-                      name="lastName"
-                      defaultValue={lastName}
-                      placeholder="Votre nom"
-                      required
+                      id="last_name"
+                      name="last_name"
+                      defaultValue={profile.last_name || ""}
+                      className="mt-2"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label>Email</Label>
+                  <div>
+                    <Label htmlFor="email">Email</Label>
                     <Input
+                      id="email"
                       name="email"
                       type="email"
-                      defaultValue={profile?.email || ""}
-                      placeholder="votre@email.com"
-                      required
+                      defaultValue={profile.email}
+                      className="mt-2"
+                      disabled
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label>Téléphone</Label>
+                  <div>
+                    <Label htmlFor="phone">Téléphone</Label>
                     <Input
+                      id="phone"
                       name="phone"
                       type="tel"
-                      defaultValue={profile?.phone || ""}
-                      placeholder="+33 6 12 34 56 78"
+                      defaultValue={profile.phone || ""}
+                      className="mt-2"
                     />
                   </div>
                 </div>
               </Card>
 
-              {/* Organization Information */}
+              {/* Account Information */}
               <Card className="p-6">
                 <h2 className="text-lg font-medium mb-6">
-                  Informations de l'Organisation
+                  Informations du Compte
                 </h2>
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label>Nom de l'entreprise</Label>
-                    <Input
-                      name="company"
-                      defaultValue={profile?.company || ""}
-                      placeholder="Nom de votre entreprise"
-                      required
-                    />
+                  <div>
+                    <Label>Statut du compte</Label>
+                    <div className="mt-2">
+                      <span
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${
+                          profile.status === "active"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {profile.status === "active" ? "Actif" : "Inactif"}
+                      </span>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label>Secteur d'activité</Label>
-                    <Select
-                      name="industry"
-                      defaultValue={profile?.industry || ""}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez un secteur" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="technologies">
-                          Technologies
-                        </SelectItem>
-                        <SelectItem value="finance">Finance</SelectItem>
-                        <SelectItem value="sante">Santé</SelectItem>
-                        <SelectItem value="education">Éducation</SelectItem>
-                        <SelectItem value="autre">Autre</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div>
+                    <Label>Date de création</Label>
+                    <div className="mt-2 text-sm text-gray-600">
+                      {new Date(profile.created_at).toLocaleDateString(
+                        "fr-FR",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label>Adresse</Label>
-                    <Input
-                      name="address"
-                      defaultValue={profile?.address || ""}
-                      placeholder="Adresse de l'entreprise"
-                      required
-                    />
+                  <div>
+                    <Label>Dernière connexion</Label>
+                    <div className="mt-2 text-sm text-gray-600">
+                      {profile.last_sign_in_at
+                        ? new Date(profile.last_sign_in_at).toLocaleDateString(
+                            "fr-FR",
+                            {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                              hour: "numeric",
+                              minute: "numeric",
+                            }
+                          )
+                        : "Jamais"}
+                    </div>
                   </div>
                 </div>
               </Card>
             </div>
+
+            {/* Organization Information */}
+            <Card className="p-6">
+              <h2 className="text-lg font-medium mb-6">
+                Informations de l'Organisation
+              </h2>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Nom de l'organisation</Label>
+                  <Input
+                    name="organisation_name"
+                    defaultValue={organisation?.name || ""}
+                    placeholder="Nom de votre organisation"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Type d'organisation</Label>
+                  <Select
+                    name="organisation_type"
+                    defaultValue={organisation?.type || ""}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionnez un type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="enterprise">Entreprise</SelectItem>
+                      <SelectItem value="startup">Startup</SelectItem>
+                      <SelectItem value="association">Association</SelectItem>
+                      <SelectItem value="other">Autre</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Adresse</Label>
+                  <Input
+                    name="organisation_address"
+                    defaultValue={organisation?.address || ""}
+                    placeholder="Adresse de l'organisation"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Description</Label>
+                  <Input
+                    name="organisation_description"
+                    defaultValue={organisation?.description || ""}
+                    placeholder="Description de l'organisation"
+                  />
+                </div>
+              </div>
+            </Card>
 
             {/* Team Section */}
             <div className="space-y-6">
@@ -300,40 +403,113 @@ export default function ProfilePage() {
                   type="button"
                   variant="outline"
                   className="text-[#7C3AED]"
+                  onClick={() => {
+                    toast.info("Fonctionnalité d'invitation à implémenter");
+                  }}
                 >
                   Inviter
                 </Button>
               </div>
 
-              <Card className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-8 h-8" key={avatarKey}>
-                      <AvatarImage src={avatarUrl} />
-                      <AvatarFallback>{getInitials()}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">
-                        {profile?.name || "Utilisateur"}
-                      </p>
-                      <p className="text-sm text-gray-600">{profile?.email}</p>
-                    </div>
-                  </div>
-                  <Select defaultValue={profile?.role || "member"}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="member">Membre</SelectItem>
-                    </SelectContent>
-                  </Select>
+              {isLoadingTeam ? (
+                <div className="flex justify-center p-4">
+                  <Loader2 className="w-6 h-6 animate-spin text-[#7C3AED]" />
                 </div>
-              </Card>
+              ) : teamMembers.length > 0 ? (
+                <div className="space-y-2">
+                  {teamMembers.map((member) => (
+                    <Card key={member.id} className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage
+                              src={member.profile_picture_url || ""}
+                            />
+                            <AvatarFallback>
+                              {`${member.first_name?.[0] || ""}${
+                                member.last_name?.[0] || ""
+                              }`.toUpperCase() || "U"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">
+                              {`${member.first_name || ""} ${
+                                member.last_name || ""
+                              }`.trim() || "Utilisateur"}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {member.email}
+                            </p>
+                          </div>
+                        </div>
+                        <Select defaultValue={member.role}>
+                          <SelectTrigger className="w-32">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="admin">Admin</SelectItem>
+                            <SelectItem value="member">Membre</SelectItem>
+                            <SelectItem value="guest">Invité</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <Card className="p-4">
+                  <p className="text-sm text-gray-500">
+                    Aucun membre dans l'équipe.
+                  </p>
+                </Card>
+              )}
 
+              {/* Pending Invitations */}
               <h2 className="text-lg font-medium mt-8">
                 Invitations en attente
               </h2>
+
+              {pendingInvites.length > 0 ? (
+                <div className="space-y-2">
+                  {pendingInvites.map((invite) => (
+                    <Card key={invite.id} className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">{invite.email}</p>
+                          <p className="text-sm text-gray-500">
+                            Invité en tant que{" "}
+                            {invite.role === "admin"
+                              ? "Administrateur"
+                              : invite.role === "member"
+                                ? "Membre"
+                                : "Invité"}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Expire le{" "}
+                            {new Date(invite.expires_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          className="text-red-500 border-red-200 hover:bg-red-50"
+                          size="sm"
+                          onClick={() => {
+                            toast.info(
+                              "Fonctionnalité de suppression à implémenter"
+                            );
+                          }}
+                        >
+                          Annuler
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  Aucune invitation en attente.
+                </p>
+              )}
             </div>
           </div>
         </form>

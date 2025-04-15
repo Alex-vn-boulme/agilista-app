@@ -6,7 +6,6 @@ import {
   Mail,
   ShieldCheck,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 interface EmailVerificationProps {
@@ -23,15 +22,9 @@ export default function EmailVerification({
       {/* Colonne gauche - Formulaire */}
       <div className="flex flex-col items-center justify-center bg-white p-8">
         <div className="w-full max-w-md">
-          <div className="mb-8 flex items-center">
-            <Image
-              src="/logo-agilista.png"
-              alt="Agilista Logo"
-              width={40}
-              height={40}
-              className="mr-2"
-            />
-            <BotIcon className="h-6 w-6 text-[#7C3AED]" />
+          <div className="flex items-center gap-2 mb-8">
+            <BotIcon className="w-8 h-8 text-[#7C3AED]" />
+            <span className="text-xl font-semibold">Agilista</span>
           </div>
 
           <div className="text-center space-y-6">

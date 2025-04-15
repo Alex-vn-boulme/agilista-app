@@ -6,201 +6,287 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export type UserRole = "platform_admin" | "org_admin" | "org_member";
+export type UserRole = "super_admin" | "admin" | "member" | "guest";
 
 export type Database = {
   public: {
     Tables: {
-      subscriptions: {
+      automation_requests: {
         Row: {
-          id: string;
-          user_id: string | null;
-          stripe_id: string | null;
-          price_id: string | null;
-          stripe_price_id: string | null;
-          currency: string | null;
-          interval: string | null;
-          status: string | null;
-          current_period_start: number | null;
-          current_period_end: number | null;
-          cancel_at_period_end: boolean | null;
-          amount: number | null;
-          started_at: number | null;
-          ends_at: number | null;
-          ended_at: number | null;
-          canceled_at: number | null;
-          customer_cancellation_reason: string | null;
-          customer_cancellation_comment: string | null;
-          metadata: Json | null;
-          custom_field_data: Json | null;
-          customer_id: string | null;
+          id: number;
+          created_at: string;
+          user_id: number;
+          status: string;
+          description: string;
+          workflow_id: number;
+        };
+        Insert: {
+          id?: number;
+          created_at?: string;
+          user_id: number;
+          status: string;
+          description: string;
+          workflow_id: number;
+        };
+        Update: {
+          id?: number;
+          created_at?: string;
+          user_id?: number;
+          status?: string;
+          description?: string;
+          workflow_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "automation_requests_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "automation_requests_workflow_id_fkey";
+            columns: ["workflow_id"];
+            isOneToOne: false;
+            referencedRelation: "workflows";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      domains: {
+        Row: {
+          id: number;
+          name: string;
+          description: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          name: string;
+          description?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          name?: string;
+          description?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      organisation_types: {
+        Row: {
+          id: number;
+          name: string;
+          description: string | null;
+          domain_ids: number[] | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          name: string;
+          description?: string | null;
+          domain_ids?: number[] | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          name?: string;
+          description?: string | null;
+          domain_ids?: number[] | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      organisations: {
+        Row: {
+          id: number;
+          name: string;
+          description: string | null;
+          address: string | null;
+          logo_url: string | null;
+          type: string | null;
+          status: string;
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          user_id?: string | null;
-          stripe_id?: string | null;
-          price_id?: string | null;
-          stripe_price_id?: string | null;
-          currency?: string | null;
-          interval?: string | null;
-          status?: string | null;
-          current_period_start?: number | null;
-          current_period_end?: number | null;
-          cancel_at_period_end?: boolean | null;
-          amount?: number | null;
-          started_at?: number | null;
-          ends_at?: number | null;
-          ended_at?: number | null;
-          canceled_at?: number | null;
-          customer_cancellation_reason?: string | null;
-          customer_cancellation_comment?: string | null;
-          metadata?: Json | null;
-          custom_field_data?: Json | null;
-          customer_id?: string | null;
+          id?: number;
+          name: string;
+          description?: string | null;
+          address?: string | null;
+          logo_url?: string | null;
+          type?: string | null;
+          status: string;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
-          id?: string;
-          user_id?: string | null;
-          stripe_id?: string | null;
-          price_id?: string | null;
-          stripe_price_id?: string | null;
-          currency?: string | null;
-          interval?: string | null;
-          status?: string | null;
-          current_period_start?: number | null;
-          current_period_end?: number | null;
-          cancel_at_period_end?: boolean | null;
-          amount?: number | null;
-          started_at?: number | null;
-          ends_at?: number | null;
-          ended_at?: number | null;
-          canceled_at?: number | null;
-          customer_cancellation_reason?: string | null;
-          customer_cancellation_comment?: string | null;
-          metadata?: Json | null;
-          custom_field_data?: Json | null;
-          customer_id?: string | null;
+          id?: number;
+          name?: string;
+          description?: string | null;
+          address?: string | null;
+          logo_url?: string | null;
+          type?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      subscriptions: {
+        Row: {
+          id: number;
+          organisation_id: number;
+          stripe_subscription_id: string;
+          status: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: number;
+          organisation_id: number;
+          stripe_subscription_id: string;
+          status: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: number;
+          organisation_id?: number;
+          stripe_subscription_id?: string;
+          status?: string;
           created_at?: string;
           updated_at?: string;
         };
         Relationships: [
           {
-            foreignKeyName: "subscriptions_user_id_fkey";
-            columns: ["user_id"];
+            foreignKeyName: "subscriptions_organisation_id_fkey";
+            columns: ["organisation_id"];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["user_id"];
+            referencedRelation: "organisations";
+            referencedColumns: ["id"];
           },
         ];
       };
-      users: {
+      user_roles: {
         Row: {
-          id: string;
-          avatar_url: string | null;
-          user_id: string | null;
-          token_identifier: string;
-          subscription: string | null;
-          credits: string | null;
-          image: string | null;
-          created_at: string;
-          updated_at: string | null;
-          email: string | null;
-          name: string | null;
-          full_name: string | null;
-          first_name: string | null;
-          last_name: string | null;
-          company: string | null;
-          industry: string | null;
-          address: string | null;
+          id: number;
+          user_id: string;
           role: UserRole;
-          phone: string | null;
-          status: "active" | "inactive";
-          plan: "free" | "premium";
-          raw_user_meta_data: Json | null;
+          created_at: string;
         };
         Insert: {
-          id: string;
-          avatar_url?: string | null;
-          user_id?: string | null;
-          token_identifier: string;
-          subscription?: string | null;
-          credits?: string | null;
-          image?: string | null;
+          id?: number;
+          user_id: string;
+          role: UserRole;
           created_at?: string;
-          updated_at?: string | null;
-          email?: string | null;
-          name?: string | null;
-          full_name?: string | null;
+        };
+        Update: {
+          id?: number;
+          user_id?: string;
+          role?: UserRole;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      profiles: {
+        Row: {
+          id: string;
+          email: string;
+          first_name: string | null;
+          last_name: string | null;
+          phone: string | null;
+          profile_picture_url: string | null;
+          status: string;
+          created_at: string;
+          updated_at: string;
+          last_sign_in_at: Date | null;
+        };
+        Insert: {
+          id?: string;
+          email: string;
           first_name?: string | null;
           last_name?: string | null;
-          company?: string | null;
-          industry?: string | null;
-          address?: string | null;
-          role?: UserRole;
           phone?: string | null;
-          status?: "active" | "inactive";
-          plan?: "free" | "premium";
-          raw_user_meta_data?: Json | null;
+          profile_picture_url?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+          last_sign_in_at?: Date | null;
         };
         Update: {
           id?: string;
-          avatar_url?: string | null;
-          user_id?: string | null;
-          token_identifier?: string;
-          subscription?: string | null;
-          credits?: string | null;
-          image?: string | null;
-          created_at?: string;
-          updated_at?: string | null;
-          email?: string | null;
-          name?: string | null;
-          full_name?: string | null;
+          email?: string;
           first_name?: string | null;
           last_name?: string | null;
-          company?: string | null;
-          industry?: string | null;
-          address?: string | null;
-          role?: UserRole;
           phone?: string | null;
-          status?: "active" | "inactive";
-          plan?: "free" | "premium";
-          raw_user_meta_data?: Json | null;
+          profile_picture_url?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+          last_sign_in_at?: Date | null;
         };
         Relationships: [];
       };
-      webhook_events: {
+      workflows: {
         Row: {
-          id: string;
-          event_type: string;
-          type: string;
-          stripe_event_id: string | null;
-          data: Json | null;
+          id: number;
+          name: string;
+          description: string | null;
+          organisation_id: number;
+          domain_id: number | null;
+          n8n_id: string | null;
+          status: string;
           created_at: string;
-          modified_at: string;
+          updated_at: string;
         };
         Insert: {
-          id?: string;
-          event_type: string;
-          type: string;
-          stripe_event_id?: string | null;
-          data?: Json | null;
+          id?: number;
+          name: string;
+          description?: string | null;
+          organisation_id: number;
+          domain_id?: number | null;
+          n8n_id?: string | null;
+          status: string;
           created_at?: string;
-          modified_at?: string;
+          updated_at?: string;
         };
         Update: {
-          id?: string;
-          event_type?: string;
-          type?: string;
-          stripe_event_id?: string | null;
-          data?: Json | null;
+          id?: number;
+          name?: string;
+          description?: string | null;
+          organisation_id?: number;
+          domain_id?: number | null;
+          n8n_id?: string | null;
+          status?: string;
           created_at?: string;
-          modified_at?: string;
+          updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "workflows_organisation_id_fkey";
+            columns: ["organisation_id"];
+            isOneToOne: false;
+            referencedRelation: "organisations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflows_domain_id_fkey";
+            columns: ["domain_id"];
+            isOneToOne: false;
+            referencedRelation: "domains";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
     Views: {
@@ -314,3 +400,20 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never;
+
+export type ProfileData = {
+  id: string;
+  email: string;
+  first_name: string | null;
+  last_name: string | null;
+  phone: string | null;
+  profile_picture_url: string | null;
+  status: string;
+  is_sso_user: boolean;
+  is_super_admin: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  raw_user_meta_data: any;
+  raw_app_meta_data: any;
+};

@@ -1,72 +1,71 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
-import console from "console";
+import { createRedirectUrl } from "@/utils/utils";
+import { redirect } from "next/navigation";
 import { createClient } from "../../supabase/server";
 
 export const signUpAction = async (formData: FormData) => {
-  // Récupération des données du formulaire
   const email = formData.get("email")?.toString().trim();
   const password = formData.get("password")?.toString();
   const firstName = formData.get("first_name")?.toString().trim() || "";
   const lastName = formData.get("last_name")?.toString().trim() || "";
-  const fullName = `${firstName} ${lastName}`.trim();
 
-  // Validation des données
   if (!email || !password) {
-    return encodedRedirect(
-      "error",
-      "/sign-up",
-      "L'email et le mot de passe sont obligatoires"
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/sign-up",
+        "L'email et le mot de passe sont obligatoires"
+      )
     );
   }
 
   if (password.length < 6) {
-    return encodedRedirect(
-      "error",
-      "/sign-up",
-      "Le mot de passe doit contenir au moins 6 caractères"
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/sign-up",
+        "Le mot de passe doit contenir au moins 6 caractères"
+      )
     );
   }
 
   if (firstName.length < 2 || lastName.length < 2) {
-    return encodedRedirect(
-      "error",
-      "/sign-up",
-      "Le prénom et le nom doivent contenir au moins 2 caractères"
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/sign-up",
+        "Le prénom et le nom doivent contenir au moins 2 caractères"
+      )
     );
   }
 
-  // Vérifier que l'email a un format valide
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(email)) {
-    return encodedRedirect(
-      "error",
-      "/sign-up",
-      "L'adresse email n'est pas valide"
+    throw redirect(
+      createRedirectUrl("error", "/sign-up", "L'adresse email n'est pas valide")
     );
   }
 
   const supabase = await createClient();
 
   try {
-    // Vérifier si l'email existe déjà
     const { data: existingUser } = await supabase
-      .from("users")
+      .from("profiles")
       .select("email")
       .eq("email", email)
       .maybeSingle();
 
     if (existingUser) {
-      return encodedRedirect(
-        "error",
-        "/sign-up",
-        "Cette adresse email est déjà utilisée"
+      throw redirect(
+        createRedirectUrl(
+          "error",
+          "/sign-up",
+          "Cette adresse email est déjà utilisée"
+        )
       );
     }
 
-    // 1. Créer d'abord l'utilisateur dans auth.users
-    // en incluant les métadonnées
     const {
       data: { user },
       error,
@@ -75,9 +74,14 @@ export const signUpAction = async (formData: FormData) => {
       password,
       options: {
         data: {
-          // Ces données vont dans les raw_user_meta_data de auth.users
-          name: firstName + " " + lastName,
+          first_name: firstName,
+          last_name: lastName,
           email: email,
+          status: "active",
+          raw_user_meta_data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
         },
         emailRedirectTo: process.env.NEXT_PUBLIC_SITE_URL
           ? `${process.env.NEXT_PUBLIC_SITE_URL}/email-verified`
@@ -88,81 +92,145 @@ export const signUpAction = async (formData: FormData) => {
     if (error) {
       console.log("Auth signup error:", error.message);
 
-      // Vérifier si l'erreur est liée à l'URL de redirection
       if (error.message.includes("redirect") || error.message.includes("URL")) {
         console.error(
           "Redirection URL error:",
           process.env.NEXT_PUBLIC_SITE_URL
         );
 
-        // Réessayer sans URL de redirection si c'est la cause de l'erreur
         const retrySignup = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: {
-              name: firstName + " " + lastName,
+              first_name: firstName,
+              last_name: lastName,
               email: email,
+              status: "active",
+              raw_user_meta_data: {
+                first_name: firstName,
+                last_name: lastName,
+              },
             },
           },
         });
 
         if (retrySignup.error) {
-          return encodedRedirect(
-            "error",
-            "/sign-up",
-            "Erreur lors de l'inscription. Veuillez réessayer."
+          throw redirect(
+            createRedirectUrl(
+              "error",
+              "/sign-up",
+              "Erreur lors de l'inscription. Veuillez réessayer."
+            )
           );
         }
 
         if (!retrySignup.data.user) {
-          return encodedRedirect(
-            "error",
-            "/sign-up",
-            "Erreur lors de l'inscription. Veuillez réessayer."
+          throw redirect(
+            createRedirectUrl(
+              "error",
+              "/sign-up",
+              "Erreur lors de l'inscription. Veuillez réessayer."
+            )
           );
         }
       } else {
-        // Messages d'erreur personnalisés selon le type d'erreur
         if (error.message.includes("email")) {
-          return encodedRedirect(
-            "error",
-            "/sign-up",
-            "Format d'email invalide ou déjà utilisé"
+          throw redirect(
+            createRedirectUrl(
+              "error",
+              "/sign-up",
+              "Format d'email invalide ou déjà utilisé"
+            )
           );
         } else if (error.message.includes("password")) {
-          return encodedRedirect(
-            "error",
-            "/sign-up",
-            "Le mot de passe ne respecte pas les critères de sécurité"
+          throw redirect(
+            createRedirectUrl(
+              "error",
+              "/sign-up",
+              "Le mot de passe ne respecte pas les critères de sécurité"
+            )
           );
         } else {
-          return encodedRedirect("error", "/sign-up", error.message);
+          throw redirect(createRedirectUrl("error", "/sign-up", error.message));
         }
       }
     }
 
-    // NOTE IMPORTANTE: Nous n'insérons plus manuellement dans la table users
-    // Cette opération est maintenant gérée par le trigger 'on_auth_user_created'
-    // défini dans les migrations SQL, qui copie les données de auth.users dans public.users
+    // Créer l'entrée dans la table profiles
+    if (user?.id) {
+      console.log("Creating profile for user:", user.id);
+      const { error: userError } = await supabase.from("profiles").insert([
+        {
+          id: user.id,
+          email: email,
+          first_name: firstName,
+          last_name: lastName,
+          status: "active",
+        },
+      ]);
 
-    // Si nous arrivons ici, l'inscription a réussi
+      if (userError) {
+        console.error("Error creating profile entry:", userError);
+        console.error(
+          "Full error details:",
+          JSON.stringify(userError, null, 2)
+        );
+        throw redirect(
+          createRedirectUrl(
+            "error",
+            "/sign-up",
+            "Erreur lors de la création du profil utilisateur"
+          )
+        );
+      }
+
+      // Créer un rôle par défaut pour l'utilisateur
+      console.log("Creating role for user:", user.id);
+      const { error: roleError } = await supabase.from("user_roles").insert([
+        {
+          user_id: user.id,
+          role: "member" as const,
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+      if (roleError) {
+        console.error("Error creating user role:", roleError);
+        console.error(
+          "Full role error details:",
+          JSON.stringify(roleError, null, 2)
+        );
+        throw redirect(
+          createRedirectUrl(
+            "error",
+            "/sign-up",
+            "Erreur lors de la création du rôle utilisateur"
+          )
+        );
+      }
+    }
+
     console.log("User created successfully:", email);
   } catch (error) {
-    console.log("Unexpected error during signup:", error);
-    return encodedRedirect(
-      "error",
-      "/sign-up",
-      "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
-    );
+    if (error instanceof Error) {
+      throw redirect(
+        createRedirectUrl(
+          "error",
+          "/sign-up",
+          "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
+        )
+      );
+    }
+    throw error;
   }
 
-  // Rediriger vers la page de confirmation
-  console.log("Signup successful, redirecting to email verification page...");
-  return encodedRedirect(
-    "success",
-    "/email-verification",
-    `Inscription réussie. Un email de confirmation a été envoyé à ${email}`
+  throw redirect(
+    createRedirectUrl(
+      "success",
+      "/email-verification",
+      `Inscription réussie. Un email de confirmation a été envoyé à ${email}`
+    )
   );
 };
 
@@ -171,10 +239,12 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
 
   if (!email || !password) {
-    return encodedRedirect(
-      "error",
-      "/sign-in",
-      "L'email et le mot de passe sont obligatoires"
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/sign-in",
+        "L'email et le mot de passe sont obligatoires"
+      )
     );
   }
 
@@ -190,76 +260,225 @@ export const signInAction = async (formData: FormData) => {
     });
 
     if (signInError) {
-      return encodedRedirect("error", "/sign-in", signInError.message);
-    }
-
-    if (!user) {
-      return encodedRedirect("error", "/sign-in", "Utilisateur introuvable");
-    }
-
-    // Vérifier que l'email a été confirmé
-    if (!user.email_confirmed_at) {
-      return encodedRedirect(
-        "error",
-        "/sign-in",
-        "Votre email n'a pas été confirmé. Veuillez vérifier votre boîte de réception et cliquer sur le lien de confirmation."
+      throw redirect(
+        createRedirectUrl("error", "/sign-in", signInError.message)
       );
     }
 
-    // Vérifier le statut de l'utilisateur - Corriger la requête en vérifiant par ID et non par user_id
-    try {
-      // Tenter d'abord avec user_id
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("status")
-        .eq("user_id", user.id)
-        .maybeSingle();
+    if (!user) {
+      throw redirect(
+        createRedirectUrl("error", "/sign-in", "Utilisateur introuvable")
+      );
+    }
 
-      // Si la première tentative échoue, essayer avec id
-      if (userError || !userData) {
-        const { data: userDataById, error: userErrorById } = await supabase
-          .from("users")
-          .select("status")
-          .eq("id", user.id)
-          .maybeSingle();
+    if (!user.email_confirmed_at) {
+      throw redirect(
+        createRedirectUrl(
+          "error",
+          "/sign-in",
+          "Votre email n'a pas été confirmé. Veuillez vérifier votre boîte de réception et cliquer sur le lien de confirmation."
+        )
+      );
+    }
 
-        // Si les deux tentatives échouent, considérer l'utilisateur comme actif
-        if (userErrorById || !userDataById) {
-          console.log(
-            "Utilisateur non trouvé dans la table users, mais authentifié. Considéré comme actif."
-          );
-        } else if (userDataById?.status === "inactive") {
-          return encodedRedirect(
-            "error",
-            "/sign-in",
-            "Votre compte a été désactivé. Veuillez contacter le support."
-          );
-        }
-      } else if (userData?.status === "inactive") {
-        return encodedRedirect(
+    const { data: userData, error: userError } = await supabase
+      .from("profiles")
+      .select("status")
+      .eq("id", user.id)
+      .single();
+
+    if (userError) {
+      console.error("Error fetching user status:", userError);
+      throw redirect(
+        createRedirectUrl(
+          "error",
+          "/sign-in",
+          "Une erreur est survenue lors de la vérification de votre compte"
+        )
+      );
+    }
+
+    if (userData?.status === "inactive") {
+      throw redirect(
+        createRedirectUrl(
           "error",
           "/sign-in",
           "Votre compte a été désactivé. Veuillez contacter le support."
-        );
-      }
-    } catch (userQueryError) {
-      console.error("Error querying user status:", userQueryError);
-      // Ne pas bloquer la connexion en cas d'erreur de vérification du statut
-      // Laisser l'utilisateur se connecter quand même
+        )
+      );
     }
 
-    // Tentative de redirection vers le dashboard avec URL complète et sans query params
-    // Utiliser le chemin relatif pour éviter les problèmes de redirection cross-origin
-    console.log("Authentication successful, redirecting to dashboard...");
-
-    // Utiliser encodedRedirect pour la redirection avec un statut "success"
-    return encodedRedirect("success", "/dashboard", "Connexion réussie");
+    throw redirect(
+      createRedirectUrl("success", "/dashboard", "Connexion réussie")
+    );
   } catch (error) {
-    console.error("Unexpected error during sign in:", error);
-    return encodedRedirect(
-      "error",
-      "/sign-in",
-      "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
+    if (error instanceof Error && !error.message.includes("NEXT_REDIRECT")) {
+      console.error("Unexpected error during sign in:", error);
+      throw redirect(
+        createRedirectUrl(
+          "error",
+          "/sign-in",
+          "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
+        )
+      );
+    }
+    throw error;
+  }
+};
+
+// Fonction pour demander la réinitialisation du mot de passe
+export const forgotPasswordAction = async (formData: FormData) => {
+  const email = formData.get("email") as string;
+
+  if (!email) {
+    throw redirect(
+      createRedirectUrl("error", "/forgot-password", "L'email est obligatoire")
+    );
+  }
+
+  // Vérifier que l'email a un format valide
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/forgot-password",
+        "L'adresse email n'est pas valide"
+      )
+    );
+  }
+
+  const supabase = await createClient();
+
+  try {
+    // Vérifier si l'utilisateur existe
+    const { data: existingUser } = await supabase
+      .from("profiles")
+      .select("email")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (!existingUser) {
+      // Ne pas révéler que l'utilisateur n'existe pas pour des raisons de sécurité
+      throw redirect(
+        createRedirectUrl(
+          "success",
+          "/forgot-password",
+          "Si cet email existe dans notre base de données, un lien de réinitialisation a été envoyé."
+        )
+      );
+    }
+
+    // Définir l'URL de redirection
+    const redirectTo = process.env.NEXT_PUBLIC_SITE_URL
+      ? `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`
+      : `http://localhost:3000/reset-password`;
+
+    // Envoyer l'email de réinitialisation
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo,
+    });
+
+    if (error) {
+      console.error("Error sending reset password email:", error);
+
+      // Message d'erreur générique pour ne pas révéler trop d'informations
+      throw redirect(
+        createRedirectUrl(
+          "error",
+          "/forgot-password",
+          "Une erreur est survenue. Veuillez réessayer ultérieurement."
+        )
+      );
+    }
+
+    throw redirect(
+      createRedirectUrl(
+        "success",
+        "/forgot-password",
+        "Un email de réinitialisation a été envoyé à votre adresse email."
+      )
+    );
+  } catch (error) {
+    console.error("Unexpected error during password reset:", error);
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/forgot-password",
+        "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
+      )
+    );
+  }
+};
+
+// Fonction pour réinitialiser le mot de passe
+export const resetPasswordAction = async (formData: FormData) => {
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  if (!password || !confirmPassword) {
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/reset-password",
+        "Tous les champs sont obligatoires"
+      )
+    );
+  }
+
+  if (password.length < 6) {
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/reset-password",
+        "Le mot de passe doit contenir au moins 6 caractères"
+      )
+    );
+  }
+
+  if (password !== confirmPassword) {
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/reset-password",
+        "Les mots de passe ne correspondent pas"
+      )
+    );
+  }
+
+  const supabase = await createClient();
+
+  try {
+    const { error } = await supabase.auth.updateUser({
+      password,
+    });
+
+    if (error) {
+      console.error("Error resetting password:", error);
+      throw redirect(
+        createRedirectUrl(
+          "error",
+          "/reset-password",
+          "Une erreur est survenue lors de la réinitialisation du mot de passe"
+        )
+      );
+    }
+
+    throw redirect(
+      createRedirectUrl(
+        "success",
+        "/sign-in",
+        "Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter."
+      )
+    );
+  } catch (error) {
+    console.error("Unexpected error during password update:", error);
+    throw redirect(
+      createRedirectUrl(
+        "error",
+        "/reset-password",
+        "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
+      )
     );
   }
 };
