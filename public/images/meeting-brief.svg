@@ -1,23 +1,147 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
-  <rect width="800" height="600" fill="#F8F7FF"/>
+  <rect width="600" height="400" fill="#f9f9ff" rx="15" ry="15" />
   
-  <!-- Meeting Interface -->
-  <rect x="100" y="100" width="600" height="400" rx="8" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+  <!-- Left side: Chaotic meeting -->
+  <g transform="translate(80, 60)">
+    <!-- Meeting bubble -->
+    <circle cx="100" cy="100" r="90" fill="white" stroke="#e0e0e0" stroke-width="2" />
+    
+    <!-- People icons -->
+    <g transform="translate(50, 80)">
+      <circle cx="0" cy="0" r="20" fill="#FFD166" />
+      <circle cx="0" cy="-8" r="8" fill="#FFD166" stroke="#666" stroke-width="1.5" />
+      <path d="M-8,0 C-8,8 8,8 8,0" stroke="#666" stroke-width="1.5" fill="none" />
+    </g>
+    
+    <g transform="translate(120, 60)">
+      <circle cx="0" cy="0" r="20" fill="#06D6A0" />
+      <circle cx="0" cy="-8" r="8" fill="#06D6A0" stroke="#666" stroke-width="1.5" />
+      <path d="M-8,0 C-8,8 8,8 8,0" stroke="#666" stroke-width="1.5" fill="none" />
+    </g>
+    
+    <g transform="translate(150, 120)">
+      <circle cx="0" cy="0" r="20" fill="#118AB2" />
+      <circle cx="0" cy="-8" r="8" fill="#118AB2" stroke="#666" stroke-width="1.5" />
+      <path d="M-8,0 C-8,8 8,8 8,0" stroke="#666" stroke-width="1.5" fill="none" />
+    </g>
+    
+    <g transform="translate(70, 140)">
+      <circle cx="0" cy="0" r="20" fill="#EF476F" />
+      <circle cx="0" cy="-8" r="8" fill="#EF476F" stroke="#666" stroke-width="1.5" />
+      <path d="M-8,0 C-8,8 8,8 8,0" stroke="#666" stroke-width="1.5" fill="none" />
+    </g>
+    
+    <!-- Speech bubbles scattered -->
+    <g transform="translate(40, 30) rotate(-10)">
+      <rect x="0" y="0" width="40" height="25" fill="#f0f0f0" rx="10" ry="10" />
+      <path d="M5,25 L10,35 L15,25" fill="#f0f0f0" />
+    </g>
+    
+    <g transform="translate(130, 20) rotate(5)">
+      <rect x="0" y="0" width="50" height="25" fill="#f0f0f0" rx="10" ry="10" />
+      <path d="M25,25 L30,35 L35,25" fill="#f0f0f0" />
+    </g>
+    
+    <g transform="translate(170, 80) rotate(15)">
+      <rect x="0" y="0" width="40" height="25" fill="#f0f0f0" rx="10" ry="10" />
+      <path d="M10,25 L15,35 L20,25" fill="#f0f0f0" />
+    </g>
+    
+    <g transform="translate(20, 120) rotate(-5)">
+      <rect x="0" y="0" width="45" height="25" fill="#f0f0f0" rx="10" ry="10" />
+      <path d="M15,25 L20,35 L25,25" fill="#f0f0f0" />
+    </g>
+    
+    <!-- Random items -->
+    <path d="M40,190 L170,190" stroke="#ccc" stroke-width="1" stroke-dasharray="5,5" />
+    <g transform="translate(50, 200)">
+      <rect x="0" y="0" width="30" height="40" fill="#f0f0f0" rx="2" ry="2" />
+      <line x1="5" y1="10" x2="25" y2="10" stroke="#ccc" stroke-width="2" />
+      <line x1="5" y1="20" x2="25" y2="20" stroke="#ccc" stroke-width="2" />
+      <line x1="5" y1="30" x2="20" y2="30" stroke="#ccc" stroke-width="2" />
+    </g>
+    
+    <g transform="translate(135, 195)">
+      <circle cx="0" cy="0" r="18" fill="white" stroke="#ccc" stroke-width="2" />
+      <line x1="-5" y1="-5" x2="5" y2="5" stroke="#ccc" stroke-width="2" />
+      <line x1="5" y1="-5" x2="-5" y2="5" stroke="#ccc" stroke-width="2" />
+    </g>
+    
+     </g>
   
-  <!-- Video Call Elements -->
-  <circle cx="400" cy="200" r="80" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="2"/>
-  <circle cx="400" cy="200" r="60" fill="#CBD5E1"/>
+  <!-- Arrow process -->
+  <g transform="translate(300, 200)">
+    <circle cx="0" cy="0" r="35" fill="#7C3AED" opacity="0.2" />
+    <path d="M-20,0 L20,0 M10,-10 L20,0 L10,10" stroke="#7C3AED" stroke-width="4" fill="none" />
+    <g transform="translate(-10, -30)">
+      <path d="M0,0 L20,0" stroke="#7C3AED" stroke-width="2" stroke-dasharray="3,3" fill="none" />
+      <circle cx="10" cy="0" r="5" fill="#7C3AED" opacity="0.3" />
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="-10,-30; -5,-30; -10,-30"
+        dur="1.5s"
+        repeatCount="indefinite" />
+    </g>
+  </g>
   
-  <!-- Participants -->
-  <circle cx="300" cy="300" r="30" fill="#7C3AED" fill-opacity="0.1"/>
-  <circle cx="400" cy="300" r="30" fill="#7C3AED" fill-opacity="0.1"/>
-  <circle cx="500" cy="300" r="30" fill="#7C3AED" fill-opacity="0.1"/>
+  <!-- Right side: Structured brief -->
+  <g transform="translate(400, 60)">
+    <!-- Document frame -->
+    <rect x="0" y="0" width="180" height="240" fill="white" stroke="#7C3AED" stroke-width="2" rx="5" ry="5" />
+    <rect x="0" y="0" width="180" height="40" fill="#7C3AED" rx="5" ry="5" />
+    <rect x="0" y="20" width="180" height="20" fill="#7C3AED" />
+    
+    <!-- Document title -->
+    <text x="90" y="25" font-family="Arial" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Brief Projet</text>
+    
+    <!-- Document content -->
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="150" height="18" fill="#F0EBFF" rx="2" ry="2" />
+      <text x="10" y="14" font-family="Arial" font-size="12" font-weight="bold" fill="#7C3AED">Points essentiels</text>
+    </g>
+    
+    <g transform="translate(15, 80)">
+      <rect x="0" y="0" width="10" height="10" fill="#7C3AED" rx="2" ry="2" />
+      <text x="20" y="9" font-family="Arial" font-size="11" fill="#333">Point discuté 1</text>
+    </g>
+    
+    <g transform="translate(15, 100)">
+      <rect x="0" y="0" width="10" height="10" fill="#7C3AED" rx="2" ry="2" />
+      <text x="20" y="9" font-family="Arial" font-size="11" fill="#333">Point discuté 2</text>
+    </g>
+    
+    <!-- Actions section -->
+    <g transform="translate(15, 130)">
+      <rect x="0" y="0" width="150" height="18" fill="#F0EBFF" rx="2" ry="2" />
+      <text x="10" y="14" font-family="Arial" font-size="12" font-weight="bold" fill="#7C3AED">Actions à mener</text>
+    </g>
+    
+    <g transform="translate(15, 155)">
+      <circle cx="5" cy="5" r="5" fill="white" stroke="#4CAF50" stroke-width="2" />
+      <text x="20" y="9" font-family="Arial" font-size="11" fill="#333">Action 1: @Équipe</text>
+    </g>
+    
+    <g transform="translate(15, 175)">
+      <circle cx="5" cy="5" r="5" fill="white" stroke="#4CAF50" stroke-width="2" />
+      <text x="20" y="9" font-family="Arial" font-size="11" fill="#333">Action 2: @Client</text>
+    </g>
+    
+    <g transform="translate(15, 195)">
+      <circle cx="5" cy="5" r="5" fill="white" stroke="#4CAF50" stroke-width="2" />
+      <text x="20" y="9" font-family="Arial" font-size="11" fill="#333">Action 3: @Freelance</text>
+    </g>
+    
+    <!-- Dates and schedule -->
+    <g transform="translate(15, 220)">
+      <rect x="0" y="0" width="150" height="1" fill="#e0e0e0" />
+      <text x="0" y="15" font-family="Arial" font-size="10" fill="#666">Délai: 14 jours</text>
+      <text x="100" y="15" font-family="Arial" font-size="10" fill="#666">Budget: OK</text>
+    </g>
+    
+      </g>
   
-  <!-- Brief Document -->
-  <rect x="150" y="350" width="500" height="120" rx="8" fill="white" stroke="#7C3AED" stroke-width="2"/>
-  <rect x="170" y="370" width="460" height="20" rx="4" fill="#7C3AED" fill-opacity="0.1"/>
-  <rect x="170" y="400" width="400" height="20" rx="4" fill="#7C3AED" fill-opacity="0.1"/>
-  <rect x="170" y="430" width="440" height="20" rx="4" fill="#7C3AED" fill-opacity="0.1"/>
+ 
+  
 </svg> 
