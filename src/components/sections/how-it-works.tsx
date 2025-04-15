@@ -84,13 +84,8 @@ export const HowItWorks = () => {
                   <div
                     className={`flex items-center mb-4 gap-3 ${index % 2 === 0 ? "md:flex-row" : "md:flex-row"}`}
                   >
-                    <div
-                      className={`w-12 h-12 rounded-full ${step.iconBg} flex items-center justify-center md:hidden`}
-                    >
-                      {step.icon}
-                    </div>
                     <div className="text-3xl mr-2">{step.emoji}</div>
-                    <h3 className={`text-3xl font-bold ${step.textColor}`}>
+                    <h3 className={`text-2xl font-bold ${step.textColor}`}>
                       {step.title}
                     </h3>
                   </div>
