@@ -482,3 +482,15 @@ export const resetPasswordAction = async (formData: FormData) => {
     );
   }
 };
+
+export async function checkUserSubscription(userId: string) {
+  const supabase = await createClient();
+
+  const { data: subscription } = await supabase
+    .from("subscriptions")
+    .select("status")
+    .eq("user_id", userId)
+    .single();
+
+  return subscription?.status === "active";
+}

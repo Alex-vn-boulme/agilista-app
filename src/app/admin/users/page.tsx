@@ -177,7 +177,9 @@ export default function UsersPage() {
               usersData?.users.map((user: User) => (
                 <TableRow key={user.id}>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.full_name || "-"}</TableCell>
+                  <TableCell>
+                    {user.first_name} {user.last_name}
+                  </TableCell>
                   <TableCell>
                     <Select
                       value={user.status ?? "active"}
@@ -198,10 +200,10 @@ export default function UsersPage() {
                   </TableCell>
                   <TableCell>
                     <Select
-                      value={user.plan ?? "free"}
+                      value={user.status ?? "active"}
                       onValueChange={(value) =>
                         handleUpdateUser(user.id, {
-                          plan: value as User["plan"],
+                          status: value as User["status"],
                         })
                       }
                     >
@@ -216,10 +218,10 @@ export default function UsersPage() {
                   </TableCell>
                   <TableCell>
                     <Select
-                      value={user.role}
+                      value={user.status ?? "active"}
                       onValueChange={(value) =>
                         handleUpdateUser(user.id, {
-                          role: value as User["role"],
+                          status: value as User["status"],
                         })
                       }
                     >

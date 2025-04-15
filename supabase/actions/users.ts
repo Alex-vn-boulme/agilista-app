@@ -4,9 +4,11 @@ import type { Database } from "@/types/supabase";
 import { createClient } from "../server";
 
 type DbUser = Database["public"]["Tables"]["profiles"]["Row"];
-export type UserRole = Database["public"]["Tables"]["user_roles"]["Row"];
+export type UserRole = "org_member" | "org_admin" | "platform_admin";
 
-export type User = DbUser;
+export type User = DbUser & {
+  plan?: string;
+};
 
 export type GetUsersResponse = {
   users: User[];

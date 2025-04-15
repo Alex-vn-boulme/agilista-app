@@ -1,6 +1,29 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import * as z from "zod";
 import { supabase } from "../../../../supabase/supabase";
+
+export const signupSchema = z
+  .object({
+    companyName: z.string().min(2, {
+      message: "Le nom de l'entreprise doit contenir au moins 2 caractères.",
+    }),
+    email: z.string().email({
+      message: "Veuillez entrer une adresse email valide.",
+    }),
+    password: z.string().min(8, {
+      message: "Le mot de passe doit contenir au moins 8 caractères.",
+    }),
+    confirmPassword: z.string(),
+  })
+  .refine(
+    (data: { password: string; confirmPassword: string }) =>
+      data.password === data.confirmPassword,
+    {
+      message: "Les mots de passe ne correspondent pas.",
+      path: ["confirmPassword"],
+    }
+  );
 
 export async function signUpAction(formData: FormData) {
   const email = formData.get("email") as string;
