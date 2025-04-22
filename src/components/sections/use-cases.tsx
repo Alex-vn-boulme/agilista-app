@@ -17,49 +17,71 @@ type UseCase = {
 export default function UseCases() {
   const useCases: UseCase[] = [
     {
-      title: "Extraire et organiser automatiquement vos emails",
+      title: "Gérer les demandes clients sans s'éparpiller",
       description:
-        "Fini le temps perdu à trier et organiser manuellement vos briefs et demandes clients.",
+        "Chaque jour, votre boîte mail déborde de briefs, retours, ajustements, validations… Et vos chefs de projet passent des heures à reconstituer l'info, souvent dispersée sur plusieurs messages.",
       image: "/images/email-extraction.svg",
       steps: [
-        "Reconnaissance automatique des demandes, briefs et modifications",
-        "Extraction des données clés (dates, lieux, échéances, options)",
-        "Remplissage automatique de vos outils et systèmes existants",
+        "Détection automatique des demandes clients, briefs et modifications",
+        "Extraction des infos clés (dates, deadlines, options…)",
+        "Alimentation automatique de vos outils (Notion, ClickUp, Drive)",
       ],
       result:
-        "Ce qui prenait 20 minutes de tri... se fait en 30 secondes, sans erreur",
+        "20 minutes de tri, recollage et reformulation deviennent 30 secondes — sans erreur, sans friction",
       example: {
-        icon: "📸",
-        title: "Studio créatif ou agence événementielle",
+        icon: "💼",
+        title: "Focus sur l'essentiel",
         description: [
-          "De nombreux échanges se croisent entre clients, freelances et partenaires",
-          "Agilista centralise les infos, organise les fichiers et enrichit la donnée automatiquement",
+          "Même quand la demande est morcelée sur 5 mails, tout est regroupé",
+          "Vos équipes restent focus sur la relation et la production",
         ],
-        benefit:
-          "Vos projets avancent sans friction, tout est à sa place — et vous n'avez plus besoin de courir après l'info",
+        benefit: "Vos clients voient juste une agence carrée, rapide et fluide",
       },
     },
     {
-      title: "Transformer vos réunions en briefs actionnables",
+      title: "Transformer vos réunions en briefs clairs",
       description:
-        "Ne perdez plus le fil de vos conversations et réunions importantes.",
+        "En réunion avec vos talents, créateurs ou partenaires, il faut tout écouter, tout noter, tout reformuler. Et malgré ça, on oublie des points, on perd du temps à tout remettre en forme, ou on oublie d'envoyer le récap…",
       image: "/images/meeting-brief.svg",
       steps: [
-        "Transcription automatique de vos échanges (avec accord)",
-        "Création d'un résumé structuré avec points d'action clairs",
-        "Classement et partage automatique des documents générés",
+        "Transcription de vos échanges (avec accord)",
+        "Génération d'un résumé structuré avec actions à mener",
+        "Classement automatique dans vos dossiers partagés",
       ],
       result:
-        "Un brief clair et actionnable en quelques minutes, sans travail supplémentaire",
+        "En quelques minutes, vous obtenez un brief clair, prêt à être partagé — sans travail en plus",
       example: {
-        icon: "🎤",
-        title: "Agent artistique ou manager de talents",
+        icon: "🧑‍🎤",
+        title: "Restez dans la discussion",
         description: [
-          "Lors d'une réunion, vous discutez d'opportunités et de projets à venir",
-          "Agilista transforme l'échange en un brief clair avec toutes les informations essentielles",
+          "Plus besoin de tout noter pendant les échanges",
+          "L'outil s'occupe de la structuration et du suivi",
         ],
         benefit:
-          "Plus besoin de tout noter, plus de confusion sur 'ce qui a été dit', un brief professionnel prêt à être partagé",
+          "Vous restez concentré sur l'échange, pendant que l'outil s'occupe du reste",
+      },
+    },
+    {
+      title: "Création automatique de reportings de campagne",
+      description:
+        "Vous passez du temps à récupérer des résultats à la main ou les talents les remplissent dans un Drive ou un formulaire, et vos équipes passent des heures à compiler, reformuler et créer les reportings à la main.",
+      image: "/images/reporting.svg",
+      steps: [
+        "Centralisation automatique des données",
+        "Structuration du reporting avec recommandations personnalisées",
+        "Préparation d'un livrable clair prêt à être validé",
+      ],
+      result:
+        "Plusieurs heures économisées par campagne, avec des reportings pros et cohérents",
+      example: {
+        icon: "📊",
+        title: "Gardez le contrôle",
+        description: [
+          "L'IA prépare le reporting complet",
+          "Vous validez et ajustez si besoin avant envoi",
+        ],
+        benefit:
+          "Des reportings professionnels en quelques clics, toujours validés par vous",
       },
     },
   ];
@@ -100,7 +122,7 @@ export default function UseCases() {
 
                   <div className="bg-[#F8F7FF] p-6 rounded-lg border border-[#7C3AED]/20">
                     <div className="flex items-center gap-3">
-                      <div className="text-xl">🔥</div>
+                      <div className="text-xl">✨</div>
                       <div className="font-medium text-gray-800">
                         Résultat :{" "}
                         <span className="font-bold text-[#7C3AED]">
@@ -144,7 +166,7 @@ export default function UseCases() {
                 <div className="mt-4 pt-4 border-t border-gray-100">
                   <div className="flex items-start gap-2">
                     <span className="font-semibold text-[#7C3AED] mt-1">
-                      💥
+                      💫
                     </span>
                     <span className="text-gray-700 font-medium">
                       {useCase.example.benefit}

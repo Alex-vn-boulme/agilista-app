@@ -16,9 +16,9 @@ export default function Features() {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {[
             {
-              title: "🧐 Audit en profondeur",
+              title: "🧐 Audit ciblé de vos process",
               description:
-                "On analyse vos process, outils et contraintes réelles.",
+                "On analyse vos outils, vos méthodes et vos points de friction concrets.",
             },
             {
               title: "⚙️ Adaptées à votre organisation",

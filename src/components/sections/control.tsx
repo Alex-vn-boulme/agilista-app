@@ -6,11 +6,12 @@ export default function Control() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
-            Vous gardez le contrôle, à chaque étape
+            Automatisez sans déshumaniser
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-            L'IA remplace le travail humain répétitif, mais vous restez maître
-            du processus.
+            Vous gardez le contrôle à chaque étape ! L’IA reste invisible pour
+            vos clients et vos talents, mais vous fait gagner un temps précieux
+            en interne.
           </p>
         </div>
 
@@ -25,22 +26,23 @@ export default function Control() {
               {
                 icon: "🤖",
                 title: "Analyse IA",
-                description: "L'IA traite vos données",
+                description: "L’IA traite vos données selon vos règles métier",
               },
               {
                 icon: "👁️",
-                title: "Validation (si nécessaire)",
+                title: "Validation humaine (quand vous le décidez)",
                 description: "Vous vérifiez et/ou modifiez",
               },
               {
                 icon: "⚡",
                 title: "Exécution IA",
-                description: "Actions automatisées",
+                description: "Les actions sont automatisées comme prévu",
               },
               {
                 icon: "✅",
-                title: "Supervision",
-                description: "Contrôle continu",
+                title: "Supervision en temps réel",
+                description:
+                  "Vous suivez, ajustez, ou intervenez à tout moment",
               },
             ].map((step, index) => (
               <div key={index} className="flex flex-col items-center">
@@ -66,8 +68,8 @@ export default function Control() {
             {[
               "Contrôle total sur chaque étape",
               "Transparence complète du processus",
-              "Validation humaine à chaque point clé",
-              "Automatisation intelligente et maîtrisée",
+              "Validation humaine possible à tout moment",
+              "Une automatisation intelligente, pas rigide",
             ].map((point, index) => (
               <div key={index} className="flex items-center gap-3">
                 <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#7C3AED] flex items-center justify-center">

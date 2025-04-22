@@ -22,11 +22,11 @@ export const HowItWorks = () => {
       emoji: "⚙️",
       title: "Conception",
       subtitle:
-        "Nous créons un système intelligent qui s'adapte à votre façon de travailler.",
+        "On crée un système intelligent qui s’intègre à vos outils et à votre façon de travailler.",
       points: [
-        "Intégration fluide avec vos outils existants (emails, CRM, etc.)",
-        "Développement de solutions simples adaptées à vos besoins",
-        "Automatisation des tâches complexes sans changer vos méthodes",
+        "Connexion fluide à vos outils existants (drive, emails, plannings, etc.)",
+        "Mise en place de solutions simples et adaptées à vos process internes",
+        "Automatisation de tâches complexes sans bouleverser vos méthodes",
       ],
       color: "bg-white",
       textColor: "text-[#7C3AED]",
@@ -39,9 +39,9 @@ export const HowItWorks = () => {
       subtitle:
         "Votre système fonctionne en autonomie, tout en vous laissant le contrôle total.",
       points: [
-        "Tableau de bord intuitif pour gérer facilement vos automatisations",
-        "Liberté d'intervenir à tout moment, sans jamais y être contraint",
-        "Maintenance, mises à jour et support inclus dans votre abonnement",
+        "Validation humaine possible à chaque étape, sans obligation.",
+        "Tableau de bord intuitif pour suivre et ajuster vos automatisations",
+        "Maintenance, mises à jour et support inclus dans l’abonnement",
       ],
       color: "bg-white",
       textColor: "text-[#7C3AED]",

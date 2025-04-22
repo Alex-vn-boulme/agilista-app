@@ -1,4 +1,4 @@
-import { BotIcon, Github, Linkedin } from "lucide-react";
+import { BotIcon, Linkedin } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
@@ -59,10 +59,6 @@ export default function Footer() {
             <a href="#" className="text-gray-400 hover:text-[#7C3AED]">
               <span className="sr-only">LinkedIn</span>
               <Linkedin className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-[#7C3AED]">
-              <span className="sr-only">GitHub</span>
-              <Github className="h-6 w-6" />
             </a>
           </div>
         </div>
