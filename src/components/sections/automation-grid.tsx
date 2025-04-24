@@ -73,8 +73,26 @@ export default function AutomationGrid() {
 
   // Dupliquer les éléments pour créer l'effet de boucle
   const rows = [
-    [...firstRow, ...firstRow],
-    [...secondRow, ...secondRow],
+    [
+      ...firstRow,
+      ...firstRow,
+      ...firstRow,
+      ...firstRow,
+      ...firstRow,
+      ...firstRow,
+      ...firstRow,
+      ...firstRow,
+    ],
+    [
+      ...secondRow,
+      ...secondRow,
+      ...secondRow,
+      ...secondRow,
+      ...secondRow,
+      ...secondRow,
+      ...secondRow,
+      ...secondRow,
+    ],
   ];
 
   return (
@@ -110,7 +128,7 @@ export default function AutomationGrid() {
                   x: rowIndex === 0 ? "-100%" : "0%",
                 }}
                 transition={{
-                  duration: 180,
+                  duration: 500,
                   repeat: Infinity,
                   ease: "linear",
                 }}
