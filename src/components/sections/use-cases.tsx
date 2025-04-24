@@ -65,7 +65,7 @@ export default function UseCases() {
       title: "Création automatique de reportings de campagne",
       description:
         "Vous passez du temps à récupérer des résultats à la main ou les talents les remplissent dans un Drive ou un formulaire, et vos équipes passent des heures à compiler, reformuler et créer les reportings à la main.",
-      image: "/images/reporting.svg",
+      image: "/images/reporting-automation.svg",
       steps: [
         "Centralisation automatique des données",
         "Structuration du reporting avec recommandations personnalisées",
@@ -102,9 +102,7 @@ export default function UseCases() {
             <div key={index} className="max-w-5xl mx-auto">
               <div className="grid md:grid-cols-2 gap-12 items-center mb-8">
                 <div className={`${index % 2 !== 0 ? "md:order-2" : ""}`}>
-                  <h3 className="text-2xl font-bold mb-4 text-[#7C3AED]">
-                    {useCase.title}
-                  </h3>
+                  <h3 className="text-2xl font-bold mb-4">{useCase.title}</h3>
                   <p className="text-lg text-gray-600 mb-8">
                     {useCase.description}
                   </p>
@@ -143,35 +141,6 @@ export default function UseCases() {
                     style={{ objectFit: "contain" }}
                     priority
                   />
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="text-3xl">{useCase.example.icon}</div>
-                  <h4 className="text-xl font-semibold">
-                    {useCase.example.title}
-                  </h4>
-                </div>
-
-                <ul className="space-y-3 mb-6">
-                  {useCase.example.description.map((item, itemIdx) => (
-                    <li key={itemIdx} className="flex items-start gap-2">
-                      <span className="text-[#7C3AED] mt-1 font-bold">→</span>
-                      <span className="text-gray-600">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <div className="flex items-start gap-2">
-                    <span className="font-semibold text-[#7C3AED] mt-1">
-                      💫
-                    </span>
-                    <span className="text-gray-700 font-medium">
-                      {useCase.example.benefit}
-                    </span>
-                  </div>
                 </div>
               </div>
             </div>

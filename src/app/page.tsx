@@ -21,6 +21,9 @@ export default async function Home() {
 
       <Hero />
 
+      {/* Automation Grid Section */}
+      <AutomationGrid />
+
       {/* Features Section */}
       <Features />
 
@@ -32,9 +35,6 @@ export default async function Home() {
 
       {/* Use Cases Section */}
       <UseCases />
-
-      {/* Automation Grid Section */}
-      <AutomationGrid />
 
       {/* Security Section */}
       <Security />

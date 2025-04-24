@@ -6,12 +6,12 @@ export default function Security() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">
-            Parce que dans votre métier, la discrétion est aussi importante que
-            la performance, vos données restent chez vous !
+            Vos données restent chez vous !
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Contrairement à la plupart des solutions, Agilista ne partage jamais
-            vos informations avec des tiers.
+            Parce que dans votre métier, la discrétion est aussi importante que
+            la performance. Agilista contrairement aux autres solutions, ne
+            partage jamais vos informations avec des tiers.
           </p>
         </div>
 
@@ -48,12 +48,6 @@ export default function Security() {
             </div>
           ))}
         </div>
-
-        <p className="mt-8 text-gray-600">
-          Chaque brief, contrat ou reporting peut contenir des informations
-          confidentielles — voire stratégiques. Nous mettons en place votre
-          propre serveur dédié : un système 100 % privé et conforme à la RGPD.
-        </p>
 
         {/* Bouton d'audit */}
         <div className="mt-12 text-center">

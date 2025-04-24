@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f9f9ff" rx="15" ry="15" />
+  
+  <!-- Left side: Manual reporting -->
+  <g transform="translate(80, 60)">
+    <!-- Documents pile -->
+    <rect x="0" y="0" width="180" height="120" fill="white" stroke="#e0e0e0" stroke-width="2" rx="5" ry="5" transform="rotate(-8)" />
+    <rect x="10" y="10" width="180" height="120" fill="white" stroke="#e0e0e0" stroke-width="2" rx="5" ry="5" transform="rotate(-4)" />
+    <rect x="20" y="20" width="180" height="120" fill="white" stroke="#e0e0e0" stroke-width="2" rx="5" ry="5" transform="rotate(3)" />
+    
+    <!-- Document content -->
+    <g transform="translate(40, 40)">
+      <rect x="0" y="0" width="140" height="15" fill="#e5e5e5" rx="2" ry="2" />
+      <rect x="0" y="25" width="100" height="10" fill="#e5e5e5" rx="2" ry="2" />
+      <rect x="0" y="45" width="120" height="10" fill="#e5e5e5" rx="2" ry="2" />
+      <rect x="0" y="65" width="90" height="10" fill="#e5e5e5" rx="2" ry="2" />
+    </g>
+    
+    <!-- Charts and graphs -->
+    <g transform="translate(20, 150)">
+      <rect width="40" height="30" fill="#e0e0e0" rx="5" ry="5" />
+      <path d="M5,25 L15,15 L25,20 L35,10" stroke="#7C3AED" stroke-width="2" fill="none" />
+    </g>
+    <g transform="translate(80, 150)">
+      <rect width="40" height="30" fill="#e0e0e0" rx="5" ry="5" />
+      <rect x="5" y="5" width="10" height="20" fill="#7C3AED" />
+      <rect x="20" y="10" width="10" height="15" fill="#7C3AED" />
+      <rect x="35" y="15" width="10" height="10" fill="#7C3AED" />
+    </g>
+    <g transform="translate(140, 150)">
+      <rect width="40" height="30" fill="#e0e0e0" rx="5" ry="5" />
+      <circle cx="20" cy="15" r="10" fill="#7C3AED" opacity="0.5" />
+    </g>
+    
+    <!-- Time indicators -->
+    <g transform="translate(20, 200)">
+      <circle cx="0" cy="0" r="15" fill="#FF6B6B" />
+      <text x="25" y="5" font-family="Arial" font-size="12" fill="#333">+2h</text>
+    </g>
+    <g transform="translate(100, 200)">
+      <circle cx="0" cy="0" r="15" fill="#FF8E53" />
+      <text x="25" y="5" font-family="Arial" font-size="12" fill="#333">+3h</text>
+    </g>
+  </g>
+  
+  <!-- Arrow process -->
+  <g transform="translate(400, 200)">
+    <circle cx="0" cy="0" r="35" fill="#7C3AED" opacity="0.2" />
+    <path d="M-20,0 L20,0 M10,-10 L20,0 L10,10" stroke="#7C3AED" stroke-width="4" fill="none" />
+    <g transform="translate(-15, -30)">
+      <path d="M0,0 C10,-10 20,-10 30,0" stroke="#7C3AED" stroke-width="2" stroke-dasharray="3,3" fill="none" />
+      <path d="M30,0 L25,-5 M30,0 L25,5" stroke="#7C3AED" stroke-width="2" fill="none" />
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="-15,-30; -10,-30; -15,-30"
+        dur="2s"
+        repeatCount="indefinite" />
+    </g>
+  </g>
+  
+  <!-- Right side: Automated reporting -->
+  <g transform="translate(500, 60)">
+    <!-- Dashboard frame -->
+    <rect x="0" y="0" width="240" height="320" fill="white" stroke="#7C3AED" stroke-width="2" rx="10" ry="10" />
+    
+    <!-- Header -->
+    <rect x="0" y="0" width="240" height="40" fill="#7C3AED" rx="10" ry="10" />
+    <rect x="0" y="20" width="240" height="20" fill="#7C3AED" />
+    <text x="120" y="25" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Reporting Automatisé</text>
+    
+    <!-- KPIs -->
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="200" height="40" fill="#F0EBFF" rx="5" ry="5" />
+      <text x="10" y="25" font-family="Arial" font-size="12" fill="#333">Engagement: +45%</text>
+      <circle cx="185" cy="20" r="10" fill="#4CAF50" />
+      <text x="185" y="24" font-family="Arial" font-size="12" fill="white" text-anchor="middle">↑</text>
+    </g>
+    
+    <g transform="translate(20, 110)">
+      <rect x="0" y="0" width="200" height="40" fill="#F0EBFF" rx="5" ry="5" />
+      <text x="10" y="25" font-family="Arial" font-size="12" fill="#333">ROI: 3.2x</text>
+      <circle cx="185" cy="20" r="10" fill="#4CAF50" />
+      <text x="185" y="24" font-family="Arial" font-size="12" fill="white" text-anchor="middle">↑</text>
+    </g>
+    
+    <!-- Charts -->
+    <g transform="translate(20, 160)">
+      <rect x="0" y="0" width="200" height="120" fill="#F0EBFF" rx="5" ry="5" />
+      <!-- Graph lines -->
+      <path d="M10,100 L50,80 L90,60 L130,40 L170,50" stroke="#7C3AED" stroke-width="2" fill="none" />
+      <path d="M10,80 L50,70 L90,50 L130,60 L170,70" stroke="#4CAF50" stroke-width="2" fill="none" />
+      <!-- Dots -->
+      <circle cx="50" cy="80" r="3" fill="#7C3AED" />
+      <circle cx="90" cy="60" r="3" fill="#7C3AED" />
+      <circle cx="130" cy="40" r="3" fill="#7C3AED" />
+      <circle cx="170" cy="50" r="3" fill="#7C3AED" />
+    </g>
+    
+    <!-- Time saved -->
+    <g transform="translate(20, 290)">
+      <rect x="0" y="0" width="200" height="30" fill="#F0EBFF" rx="5" ry="5" />
+      <text x="10" y="20" font-family="Arial" font-size="12" fill="#333">Temps économisé: 4h</text>
+      <circle cx="185" cy="15" r="10" fill="#7C3AED" />
+      <text x="185" y="19" font-family="Arial" font-size="12" fill="white" text-anchor="middle">✓</text>
+    </g>
+  </g>
+</svg> 
