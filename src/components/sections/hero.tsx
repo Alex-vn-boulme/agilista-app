@@ -4,41 +4,42 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="relative overflow-hidden bg-white min-h-screen flex items-center">
+    <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#F5F3FF] to-[#EDE9FE] min-h-screen flex items-center">
       {/* Background avec éléments animés */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         {/* Cercles décoratifs flottants */}
-        <div className="w-[500px] h-[500px] bg-[#7C3AED]/1 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-[#4ECDC4]/10 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#7C3AED]/10 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute top-[60%] left-[-10%] w-[600px] h-[600px] bg-[#FF9F87]/5 rounded-full blur-3xl animate-pulse-slow-delayed" />
+        <div className="absolute bottom-[-15%] right-[20%] w-[400px] h-[400px] bg-[#4ECDC4]/5 rounded-full blur-3xl animate-pulse-slow" />
 
-        {/* Lignes décoratives */}
-        <div className="absolute top-1/4 left-1/4 w-1 h-32 bg-gradient-to-b from-[#7C3AED]/20 to-transparent animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-1 h-32 bg-gradient-to-t from-[#4ECDC4]/20 to-transparent animate-float-delayed" />
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white/90" />
+        {/* Gradient overlay plus léger */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
       </div>
 
       {/* Contenu principal */}
       <div className="relative w-full py-16">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
-            {/* Titre avec animation de fade-in */}
+            {/* Titre avec animation de fade-in et mots rotatifs */}
             <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-8 tracking-tight animate-fade-in">
-              Gérez plus de clients, <br />
-              <span className="text-[#7C3AED] relative">
-                sans épuiser vos équipes
-                <svg
-                  className="absolute -right-8 top-0 w-6 h-6 text-[#7C3AED]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M12 3L14.5 8.5L20 11L14.5 13.5L12 19L9.5 13.5L4 11L9.5 8.5L12 3Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
+              <div className="flex items-center justify-center gap-3">
+                <span>Gérez plus de</span>
+                <div className="inline-block relative h-[1.2em] w-[190px] overflow-hidden">
+                  <div className="words-rotate absolute left-0 right-0">
+                    <div className="flex items-center justify-center h-[1.2em] text-[#7C3AED]">
+                      clients
+                    </div>
+                    <div className="flex items-center justify-center h-[1.2em] text-[#FF9F87]">
+                      talents
+                    </div>
+                    <div className="flex items-center justify-center h-[1.2em] text-[#64B5F6]">
+                      briefs
+                    </div>
+                  </div>
+                </div>
+                <span>,</span>
+              </div>
+              <span className="relative">sans épuiser vos équipes</span>
             </h1>
 
             <p className="text-xl text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -108,31 +109,30 @@ export default function Hero() {
           0%,
           100% {
             transform: scale(1);
-            opacity: 0.2;
+            opacity: 0.8;
           }
           50% {
-            transform: scale(1.2);
-            opacity: 0.1;
+            transform: scale(1.1);
+            opacity: 0.5;
+          }
+        }
+        @keyframes pulse-slow-delayed {
+          0%,
+          100% {
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
+          50% {
+            transform: scale(1);
+            opacity: 0.5;
           }
         }
         .animate-pulse-slow {
-          animation: pulse-slow 8s infinite ease-in-out;
+          animation: pulse-slow 10s infinite ease-in-out;
         }
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-        .animate-float {
-          animation: float 4s infinite ease-in-out;
-        }
-        .animate-float-delayed {
-          animation: float 4s infinite ease-in-out;
-          animation-delay: 2s;
+        .animate-pulse-slow-delayed {
+          animation: pulse-slow-delayed 10s infinite ease-in-out;
+          animation-delay: 5s;
         }
         @keyframes fade-in {
           from {
@@ -146,6 +146,26 @@ export default function Hero() {
         }
         .animate-fade-in {
           animation: fade-in 1s ease-out;
+        }
+        .words-rotate {
+          animation: rotate 8s cubic-bezier(0.4, 0.1, 0.2, 1) infinite;
+        }
+        @keyframes rotate {
+          0%,
+          32% {
+            transform: translateY(0);
+          }
+          35%,
+          65% {
+            transform: translateY(-1.2em);
+          }
+          68%,
+          98% {
+            transform: translateY(-2.4em);
+          }
+          100% {
+            transform: translateY(-3.6em);
+          }
         }
       `}</style>
     </div>
