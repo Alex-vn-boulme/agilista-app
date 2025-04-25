@@ -1,10 +1,8 @@
-import { ArrowRight, Brain, LineChart, Settings } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const HowItWorks = () => {
   const steps = [
     {
-      icon: <Brain className="w-10 h-10 text-white" />,
-      emoji: "🧠",
       title: "Audit complet",
       subtitle:
         "Nous analysons votre organisation pour cibler les automatisations à fort impact.",
@@ -15,14 +13,13 @@ export const HowItWorks = () => {
       ],
       color: "bg-white",
       textColor: "text-[#7C3AED]",
-      iconBg: "bg-[#7C3AED]",
+      iconBg: "bg-white",
+      numberColor: "text-[#7C3AED]",
     },
     {
-      icon: <Settings className="w-10 h-10 text-white" />,
-      emoji: "⚙️",
       title: "Conception",
       subtitle:
-        "On crée un système intelligent qui s’intègre à vos outils et à votre façon de travailler.",
+        "On crée un système intelligent qui s'intègre à vos outils et à votre façon de travailler.",
       points: [
         "Connexion fluide à vos outils existants (drive, emails, plannings, etc.)",
         "Mise en place de solutions simples et adaptées à vos process internes",
@@ -30,22 +27,22 @@ export const HowItWorks = () => {
       ],
       color: "bg-white",
       textColor: "text-[#7C3AED]",
-      iconBg: "bg-[#7C3AED]",
+      iconBg: "bg-[#FF9F87]",
+      numberColor: "text-white",
     },
     {
-      icon: <LineChart className="w-10 h-10 text-white" />,
-      emoji: "📊",
       title: "Pilotage & accompagnement",
       subtitle:
         "Votre système fonctionne en autonomie, tout en vous laissant le contrôle total.",
       points: [
         "Validation humaine possible à chaque étape, sans obligation.",
         "Tableau de bord intuitif pour suivre et ajuster vos automatisations",
-        "Maintenance, mises à jour et support inclus dans l’abonnement",
+        "Maintenance, mises à jour et support inclus dans l'abonnement",
       ],
       color: "bg-white",
       textColor: "text-[#7C3AED]",
-      iconBg: "bg-[#7C3AED]",
+      iconBg: "bg-[#4ECDC4]",
+      numberColor: "text-white",
     },
   ];
 
@@ -71,7 +68,9 @@ export const HowItWorks = () => {
               <div
                 className={`absolute left-1/2 -translate-x-1/2 top-0 w-14 h-14 rounded-full ${step.iconBg} flex items-center justify-center z-10 hidden md:flex shadow-lg`}
               >
-                {step.icon}
+                <span className={`text-2xl font-bold ${step.numberColor}`}>
+                  {index + 1}
+                </span>
               </div>
 
               <div
@@ -81,10 +80,7 @@ export const HowItWorks = () => {
                 <div
                   className={`${step.color} rounded-xl shadow-xl p-8 border border-white/20 hover:shadow-2xl transition-shadow`}
                 >
-                  <div
-                    className={`flex items-center mb-4 gap-3 ${index % 2 === 0 ? "md:flex-row" : "md:flex-row"}`}
-                  >
-                    <div className="text-3xl mr-2">{step.emoji}</div>
+                  <div className="flex items-center mb-4 gap-3">
                     <h3 className={`text-2xl font-bold ${step.textColor}`}>
                       {step.title}
                     </h3>
