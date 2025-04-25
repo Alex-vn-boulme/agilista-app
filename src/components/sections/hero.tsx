@@ -5,17 +5,6 @@ import Link from "next/link";
 export default function Hero() {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#F5F3FF] to-[#EDE9FE] min-h-screen flex items-center">
-      {/* Background avec éléments animés */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Cercles décoratifs flottants */}
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#7C3AED]/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute top-[60%] left-[-10%] w-[600px] h-[600px] bg-[#FF9F87]/5 rounded-full blur-3xl animate-pulse-slow-delayed" />
-        <div className="absolute bottom-[-15%] right-[20%] w-[400px] h-[400px] bg-[#4ECDC4]/5 rounded-full blur-3xl animate-pulse-slow" />
-
-        {/* Gradient overlay plus léger */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-      </div>
-
       {/* Contenu principal */}
       <div className="relative w-full py-16">
         <div className="container mx-auto px-4">
@@ -39,7 +28,19 @@ export default function Hero() {
                 </div>
                 <span>,</span>
               </div>
-              <span className="relative">sans épuiser vos équipes</span>
+              <span className="relative">
+                sans épuiser vos équipes
+                <svg
+                  className="absolute -right-8 top-0 w-6 h-6 text-[#7C3AED]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M12 3L14.5 8.5L20 11L14.5 13.5L12 19L9.5 13.5L4 11L9.5 8.5L12 3Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
             </h1>
 
             <p className="text-xl text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -133,6 +134,22 @@ export default function Hero() {
         .animate-pulse-slow-delayed {
           animation: pulse-slow-delayed 10s infinite ease-in-out;
           animation-delay: 5s;
+        }
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateX(0);
+          }
+          50% {
+            transform: translateX(10px);
+          }
+        }
+        .animate-float {
+          animation: float 6s infinite ease-in-out;
+        }
+        .animate-float-delayed {
+          animation: float 6s infinite ease-in-out;
+          animation-delay: 3s;
         }
         @keyframes fade-in {
           from {
