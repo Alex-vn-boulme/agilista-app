@@ -1,4 +1,4 @@
-import { BotIcon, LogIn } from "lucide-react";
+import { BotIcon } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "../../supabase/server";
 import { Button } from "./ui/button";
@@ -39,10 +39,9 @@ export default async function Navbar() {
             <>
               <Link
                 href="/sign-in"
-                className="p-2 text-gray-700 hover:text-[#7C3AED] transition-colors"
-                title="Se connecter"
+                className="px-4 py-2 text-sm font-medium text-[#7C3AED] hover:text-[#6D28D9] transition-colors"
               >
-                <LogIn className="w-5 h-5" />
+                Se connecter
               </Link>
               <Link
                 href="https://cal.com/rebecca-pari/30min"
