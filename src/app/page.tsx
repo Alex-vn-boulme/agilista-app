@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import { AssistantExplanation } from "@/components/sections/assistant-explanation";
 import AutomationGrid from "@/components/sections/automation-grid";
 import Control from "@/components/sections/control";
 import Features from "@/components/sections/features";
@@ -20,6 +21,7 @@ export default async function Home() {
       <Navbar />
 
       <Hero />
+      <AssistantExplanation />
 
       {/* Automation Grid Section */}
       <AutomationGrid />
