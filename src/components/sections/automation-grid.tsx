@@ -12,58 +12,58 @@ type Automation = {
 export default function AutomationGrid() {
   const automations: Automation[] = [
     {
-      icon: "🧾",
-      title: "Préparation automatique des contrats",
-      description: "Génération et complétion automatique",
-      timeSaved: "-20 min",
-    },
-    {
-      icon: "✅",
-      title: "Suivi des validations de contenu",
-      description: "Centralisation et suivi automatique",
-      timeSaved: "-20 min",
-    },
-    {
-      icon: "📲",
-      title: "Regroupement des retours client",
-      description: "Synthèse et classement automatique",
-      timeSaved: "-40 min",
-    },
-    {
-      icon: "📅",
-      title: "Relance automatique des deadlines",
-      description: "Suivi et relances programmées",
-      timeSaved: "-30 min",
-    },
-    {
-      icon: "📈",
-      title: "Centralisation des KPIs post-campagne",
-      description: "Compilation et mise en forme auto",
-      timeSaved: "-2h",
-    },
-    {
-      icon: "📚",
-      title: "Organisation automatique des assets",
-      description: "Tri et classement intelligent",
-      timeSaved: "-30 min",
+      icon: "👥",
+      title: "Mise à jour automatique du CRM ou suivi client",
+      description: "10 à 15 min économisées par mise à jour",
+      timeSaved: "⏱️",
     },
     {
       icon: "💬",
-      title: "Résumé d'échanges en to-do",
-      description: "Conversion auto en actions",
-      timeSaved: "-20 min",
+      title: "Résumé automatique de vos réunions ou échanges clients",
+      description: "20 à 30 min gagnées par réunion ou échange",
+      timeSaved: "⏱️",
     },
     {
-      icon: "🗂️",
-      title: "Classement intelligent des documents",
-      description: "Organisation automatisée",
-      timeSaved: "-10 min",
+      icon: "🗂",
+      title: "Classement intelligent de vos documents clients",
+      description: "10 à 15 min gagnées par livraison",
+      timeSaved: "⏱️",
     },
     {
-      icon: "👥",
-      title: "Mise à jour automatique du CRM",
-      description: "Synchronisation en temps réel",
-      timeSaved: "-1 min",
+      icon: "📚",
+      title: "Organisation automatique des notes et idées d'équipe",
+      description: "1 à 2 heures gagnées par semaine",
+      timeSaved: "⏱️",
+    },
+    {
+      icon: "📅",
+      title: "Relances client automatiques avant / après deadline",
+      description: "20 à 30 min économisées par projet ou commande",
+      timeSaved: "⏱️",
+    },
+    {
+      icon: "🛠",
+      title: "Préparation automatique de reporting hebdo ou mensuel",
+      description: "1h ou plus selon la fréquence",
+      timeSaved: "⏱️",
+    },
+    {
+      icon: "⏰",
+      title: "Alertes IA sur les tâches critiques et les urgences à suivre",
+      description: "Jusqu'à 40 min gagnées selon les cas",
+      timeSaved: "⏱️",
+    },
+    {
+      icon: "📩",
+      title: "Réponse automatique aux demandes fréquentes par mail",
+      description: "15 à 20 min économisées par échange",
+      timeSaved: "⏱️",
+    },
+    {
+      icon: "🧾",
+      title: "Préparation automatique de devis, contrats ou factures",
+      description: "15 à 30 min gagnées par document",
+      timeSaved: "⏱️",
     },
   ];
 
@@ -155,7 +155,6 @@ export default function AutomationGrid() {
                           {automation.description}
                         </p>
                         <div className="flex items-center gap-1">
-                          <span className="text-[10px] text-[#7C3AED]">⏱️</span>
                           <span className="text-[10px] font-medium text-[#7C3AED]">
                             {automation.timeSaved}
                           </span>

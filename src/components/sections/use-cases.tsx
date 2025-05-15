@@ -17,71 +17,88 @@ type UseCase = {
 export default function UseCases() {
   const useCases: UseCase[] = [
     {
-      title: "Gérer les demandes clients sans s'éparpiller",
+      title: "Gérer les relances clients sans s'éparpiller (Cabinet comptable)",
       description:
-        "Chaque jour, votre boîte mail déborde de briefs, retours, ajustements, validations… Et vos chefs de projet passent des heures à reconstituer l'info, souvent dispersée sur plusieurs messages.",
-      image: "/images/email-extraction.svg",
-      steps: [
-        "Détection automatique des demandes clients, briefs et modifications",
-        "Extraction des infos clés (dates, deadlines, options…)",
-        "Alimentation automatique de vos outils (Notion, ClickUp, Drive)",
-      ],
-      result:
-        "20 minutes de tri, recollage et reformulation deviennent 30 secondes — sans erreur, sans friction",
-      example: {
-        icon: "💼",
-        title: "Focus sur l'essentiel",
-        description: [
-          "Même quand la demande est morcelée sur 5 mails, tout est regroupé",
-          "Vos équipes restent focus sur la relation et la production",
-        ],
-        benefit: "Vos clients voient juste une agence carrée, rapide et fluide",
-      },
-    },
-    {
-      title: "Transformer vos réunions en briefs clairs",
-      description:
-        "En réunion avec vos talents, créateurs ou partenaires, il faut tout écouter, tout noter, tout reformuler. Et malgré ça, on oublie des points, on perd du temps à tout remettre en forme, ou on oublie d'envoyer le récap…",
-      image: "/images/meeting-brief.svg",
-      steps: [
-        "Transcription de vos échanges (avec accord)",
-        "Génération d'un résumé structuré avec actions à mener",
-        "Classement automatique dans vos dossiers partagés",
-      ],
-      result:
-        "En quelques minutes, vous obtenez un brief clair, prêt à être partagé — sans travail en plus",
-      example: {
-        icon: "🧑‍🎤",
-        title: "Restez dans la discussion",
-        description: [
-          "Plus besoin de tout noter pendant les échanges",
-          "L'outil s'occupe de la structuration et du suivi",
-        ],
-        benefit:
-          "Vous restez concentré sur l'échange, pendant que l'outil s'occupe du reste",
-      },
-    },
-    {
-      title: "Création automatique de reportings de campagne",
-      description:
-        "Vous passez du temps à récupérer des résultats à la main ou les talents les remplissent dans un Drive ou un formulaire, et vos équipes passent des heures à compiler, reformuler et créer les reportings à la main.",
+        "Chaque début de mois, c'est la chasse aux pièces comptables : mails, pièces jointes éparpillées, réponses incomplètes. Un collaborateur passe parfois la matinée à relancer et rassembler les éléments.",
       image: "/images/reporting-automation.svg",
       steps: [
-        "Centralisation automatique des données",
-        "Structuration du reporting avec recommandations personnalisées",
-        "Préparation d'un livrable clair prêt à être validé",
+        "Relance automatique des clients avec détection des pièces manquantes",
+        "Centralisation des documents dans le bon dossier Drive",
+        "Alerte IA en cas d'élément critique manquant avant clôture",
+      ],
+      result: "50 % de temps gagné sur la préparation de chaque dossier client",
+      example: {
+        icon: "📦",
+        title: "Témoignage",
+        description: [
+          "Vous le savez j'étais sceptique au début, mais je suis plus que convaincu ! Nous avons décidé de créer un assistant pour gérer une partie de notre travail avec nos clients (relance pour des documents, réponses types, classement dans les bons dossiers …), pendant la période des bilans ça nous sauve la vie :)",
+        ],
+        benefit: "— Nicolas expert comptable (5 personnes)",
+      },
+    },
+    {
+      title: "Suivre les candidats sans perdre de temps (Cabinet RH)",
+      description:
+        "Chaque semaine, des dizaines de CV, mails de suivi, ajustements clients ou briefs s'accumulent. Résultat : les consultants passent des heures à trier, reformuler, copier-coller dans le CRM ou Trello.",
+      image: "/images/email-extraction.svg",
+      steps: [
+        "Analyse des candidatures et extraction automatique des points-clés (profil, dispo, prétentions)",
+        "Génération automatique de messages de suivi personnalisés",
+        "Mise à jour du tableau de suivi pour chaque mission",
       ],
       result:
-        "Plusieurs heures économisées par campagne, avec des reportings pros et cohérents",
+        "Plusieurs heures de gestion économisées par semaine et un suivi client plus fluide",
       example: {
-        icon: "📊",
-        title: "Gardez le contrôle",
+        icon: "🧑‍💼",
+        title: "Témoignage",
         description: [
-          "L'IA prépare le reporting complet",
-          "Vous validez et ajustez si besoin avant envoi",
+          "Les échanges avec les candidats et les clients, c'est la base de notre métier. Mais honnêtement, y'a plein de moments où on répétait les mêmes choses. Comme c'est de l'humain, ça fait un peu peur d'automatiser. Finalement, on a lancé deux assistants IA avec Agilista, et c'est hyper fluide.",
         ],
         benefit:
-          "Des reportings professionnels en quelques clics, toujours validés par vous",
+          "— Claire co-fondatrice d'un cabinet de recrutement (4 personnes)",
+      },
+    },
+    {
+      title: "Simplifier le suivi post-formation (Organisme de formation)",
+      description:
+        "Après chaque session, il faut envoyer les attestations, récupérer les évaluations, compiler les retours. L'équipe perd du temps à répéter les mêmes actions pour chaque groupe.",
+      image: "/images/meeting-brief.svg",
+      steps: [
+        "Envoi automatisé des certificats + mails de remerciement",
+        "Relance des participants pour les questionnaires de satisfaction",
+        "Génération automatique d'un rapport synthétique par session",
+      ],
+      result:
+        "30 minutes économisées par session — et un meilleur suivi qualité",
+      example: {
+        icon: "🎓",
+        title: "Témoignage",
+        description: [
+          "Je voulais garder la tranquillité de travailler seule mais j'étais débordée notamment sur la partie  CPF et les demandes de mes clients qui arrivent partout WhatsApp, mail ou formulaire... L'assistant que j'ai imaginé avec Agilista m'a vraiment déchargé et nous sommes en train d'en créer un autre sur la partie acquisition, donc je suis ravie :) ",
+        ],
+        benefit: "— Élodie coach formatrice (1 personne)",
+      },
+    },
+    {
+      title:
+        "Automatiser les relances et reporting client (Agence de communication)",
+      description:
+        "Les chefs de projet jonglent entre les briefs, les mails clients, les validations… et les oublis arrivent vite. Chaque fin de semaine, c'est le rush pour tout remettre au propre.",
+      image: "/images/reporting-automation.svg",
+      steps: [
+        "Relance automatique des clients pour validations ou retours",
+        "Organisation des assets visuels dans un espace partagé",
+        "Préparation automatique des reportings hebdos",
+      ],
+      result:
+        "Plusieurs heures gagnée par chef de projet chaque semaine — sans stress",
+      example: {
+        icon: "🎨",
+        title: "Témoignage",
+        description: [
+          "On est une petite équipe donc on fait tous un peu de tout. Personnellement, j'avais une charge mentale constante la majeur partie du temps : une relance client, un fichier à renvoyer, un suivi avec les équipes … Là, les assistants gèrent une grande partie des tâches quotidiennes de l'agence, il me notifie (ou un membre de l'équipe) si besoin, sinon je pense même plus à ça.",
+        ],
+        benefit: "— Ariane - fondatrice agence de communication (5 personnes)",
       },
     },
   ];
@@ -118,7 +135,7 @@ export default function UseCases() {
                     ))}
                   </div>
 
-                  <div className="bg-[#F8F7FF] p-6 rounded-lg border border-[#7C3AED]/20">
+                  <div className="bg-[#F8F7FF] p-6 rounded-lg border border-[#7C3AED]/20 mb-6">
                     <div className="flex items-center gap-3">
                       <div className="text-xl">✨</div>
                       <div className="font-medium text-gray-800">
@@ -141,6 +158,21 @@ export default function UseCases() {
                     style={{ objectFit: "contain" }}
                     priority
                   />
+                </div>
+              </div>
+
+              {/* Témoignage pleine largeur */}
+              <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm mb-20">
+                <div className="flex items-start gap-3 mb-2 max-w-4xl mx-auto">
+                  <span className="text-2xl">{useCase.example.icon}</span>
+                  <div>
+                    <p className="italic text-gray-700 mb-2">
+                      {useCase.example.description[0]}
+                    </p>
+                    <div className="text-sm text-gray-500 font-semibold">
+                      {useCase.example.benefit}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

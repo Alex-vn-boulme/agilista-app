@@ -4,13 +4,14 @@ export default function Features() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-20">
           <h2 className="text-4xl font-bold mb-6">
-            Des systèmes entièrement{" "}
-            <span className="text-[#7C3AED]">personnalisés</span>
+            Un audit précis. Des assistants IA utiles.
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
             Nous partons d'un audit poussé de vos process, de vos outils et de
-            vos contraintes pour identifier ce qui peut réellement être
-            automatisé.
+            vos contraintes pour identifier{" "}
+            <strong>
+              où l'IA peut vraiment soulager votre équipe, sans tout changer.
+            </strong>
           </p>
         </div>
 
