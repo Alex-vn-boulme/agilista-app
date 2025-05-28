@@ -11,46 +11,9 @@ export default function Hero() {
           <div className="text-center max-w-4xl mx-auto">
             {/* Titre avec animation de fade-in et mots rotatifs */}
             <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-8 tracking-tight animate-fade-in">
-<<<<<<< HEAD
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <span>Gérez plus de</span>
-                <span className="flex items-center">
-                  <div className="inline-block relative h-[1.2em] w-[190px] overflow-hidden">
-                    <div className="words-rotate absolute left-0 right-0">
-                      <div className="flex items-center justify-center h-[1.2em] text-[#7C3AED]">
-                        clients
-                      </div>
-                      <div className="flex items-center justify-center h-[1.2em] text-[#FF9F87]">
-                        talents
-                      </div>
-                      <div className="flex items-center justify-center h-[1.2em] text-[#64B5F6]">
-                        briefs
-                      </div>
-                    </div>
-                  </div>
-                  <span>,</span>
-                </span>
-              </div>
-              <div className="flex items-center justify-center mt-2">
-                <span className="relative">
-                  sans épuiser vos équipes
-                  <svg
-                    className="absolute -right-8 top-0 w-6 h-6 text-[#7C3AED]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M12 3L14.5 8.5L20 11L14.5 13.5L12 19L9.5 13.5L4 11L9.5 8.5L12 3Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-=======
               <span>
                 Votre équipe d'assistants IA, prête à renforcer la vôtre
               </span>
->>>>>>> landing-tpe
             </h1>
 
             <p className="text-2xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
