@@ -18,7 +18,6 @@ export default function Hero() {
               <p className="text-xl text-gray-700 leading-relaxed mb-3">
              Elles organisent, anticipent et soulagent votre équipe.
               </p>
-          
               <p className="text-lg font-semibold text-gray-700/90 mt-4">
                 Une solution pensée pour les petites équipes exigeantes.
               </p>
