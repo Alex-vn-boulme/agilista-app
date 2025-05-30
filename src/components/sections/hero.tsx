@@ -11,7 +11,7 @@ export default function Hero() {
           <div className="text-center max-w-4xl mx-auto">
             {/* Titre avec animation de fade-in et mots rotatifs */}
             <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 tracking-tight leading-tight animate-fade-in">
-              Des IA sur mesure qui travaillent avec vous.
+              Des <span className="text-[#7C3AED]">IA sur mesure</span> qui travaillent avec vous.
             </h1>
 
             <div className="max-w-[680px] mx-auto">
