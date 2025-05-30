@@ -12,14 +12,16 @@ export default function Hero() {
             {/* Titre avec animation de fade-in et mots rotatifs */}
             <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-8 tracking-tight animate-fade-in">
               <span>
-                Votre équipe d'assistants IA, prête à renforcer la vôtre
+                Des IA sur mesure qui organisent, anticipent et soulagent votre équipe.
               </span>
             </h1>
 
             <p className="text-2xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Ils organisent, anticipent et soulagent votre équipe.{" "}
-              <strong>Jusqu'à 30 % de votre temps récupéré</strong>, sans
-              embaucher tout de suite.
+              Elles vous assistent dans les tâches du quotidien : tri des emails, suivi des clients, rangement des documents…
+              <br />
+              Vous gagnez en clarté, en temps et en énergie pour faire avancer l'essentiel.
+              <br />
+              <strong>Une solution pensée pour les petites équipes exigeantes.</strong>
             </p>
 
             {/* Tags avec hover effect amélioré */}
