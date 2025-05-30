@@ -29,11 +29,12 @@ export default function Hero() {
               </div>
               <div className="inline-flex items-center px-6 py-2 rounded-full bg-[#4ECDC4]/10 text-[#4ECDC4] font-medium transition-all hover:bg-[#4ECDC4]/20 hover:scale-105">
                 <span className="mr-2">📄</span>
-                Suivi client au carré
+                Documents préparés
+
               </div>
               <div className="inline-flex items-center px-6 py-2 rounded-full bg-[#FFB156]/10 text-[#F0A202] font-medium transition-all hover:bg-[#FFB156]/20 hover:scale-105">
                 <span className="mr-2">🗓️</span>
-                Documents préparés
+ Suivi client au carré 
               </div>
             </div>
 
