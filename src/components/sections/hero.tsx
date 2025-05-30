@@ -25,15 +25,15 @@ export default function Hero() {
             <div className="flex flex-wrap justify-center gap-4 mb-12 mt-12">
               <div className="inline-flex items-center px-6 py-2 rounded-full bg-[#FF6B6B]/10 text-[#FF6B6B] font-medium transition-all hover:bg-[#FF6B6B]/20 hover:scale-105">
                 <span className="mr-2">✉️</span>
-                Emails pris en charge
+                Emails triés
               </div>
               <div className="inline-flex items-center px-6 py-2 rounded-full bg-[#4ECDC4]/10 text-[#4ECDC4] font-medium transition-all hover:bg-[#4ECDC4]/20 hover:scale-105">
                 <span className="mr-2">📄</span>
-                Docs classés sans effort
+                Suivi client au carré
               </div>
               <div className="inline-flex items-center px-6 py-2 rounded-full bg-[#FFB156]/10 text-[#F0A202] font-medium transition-all hover:bg-[#FFB156]/20 hover:scale-105">
                 <span className="mr-2">🗓️</span>
-                Suivi client au carré
+                Documents préparés
               </div>
             </div>
 
