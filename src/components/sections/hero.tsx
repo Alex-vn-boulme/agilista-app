@@ -11,12 +11,12 @@ export default function Hero() {
           <div className="text-center max-w-4xl mx-auto">
             {/* Titre avec animation de fade-in et mots rotatifs */}
             <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 tracking-tight leading-tight animate-fade-in">
-              Des IA sur mesure qui organisent, anticipent et soulagent votre équipe.
+              Des IA sur mesure qui travaillent avec vous.
             </h1>
 
             <div className="max-w-[680px] mx-auto">
               <p className="text-xl text-gray-700 leading-relaxed mb-3">
-                Elles vous assistent dans les tâches du quotidien : tri des emails, suivi des clients, rangement des documents…
+             Elles organisent, anticipent et soulagent votre équipe.
               </p>
               <p className="text-xl text-gray-700 leading-relaxed">
                 Vous gagnez en clarté, en temps et en énergie pour faire avancer l'essentiel.
