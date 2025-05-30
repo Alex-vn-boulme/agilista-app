@@ -16,9 +16,9 @@ export default function Hero() {
 
             <div className="max-w-[680px] mx-auto">
               <p className="text-xl text-gray-700 leading-relaxed mb-3">
-             Elles organisent, anticipent et soulagent votre équipe.
+                Elles organisent, anticipent et soulagent votre équipe.
                 Une solution pensée pour les petites équipes exigeantes.
-          
+              </p>
             </div>
 
             {/* Tags avec hover effect amélioré */}
@@ -68,88 +68,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      {/* Styles pour les animations */}
-      <style jsx>{`
-        @keyframes pulse-slow {
-          0%,
-          100% {
-            transform: scale(1);
-            opacity: 0.8;
-          }
-          50% {
-            transform: scale(1.1);
-            opacity: 0.5;
-          }
-        }
-        @keyframes pulse-slow-delayed {
-          0%,
-          100% {
-            transform: scale(1.1);
-            opacity: 0.8;
-          }
-          50% {
-            transform: scale(1);
-            opacity: 0.5;
-          }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 10s infinite ease-in-out;
-        }
-        .animate-pulse-slow-delayed {
-          animation: pulse-slow-delayed 10s infinite ease-in-out;
-          animation-delay: 5s;
-        }
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateX(0);
-          }
-          50% {
-            transform: translateX(10px);
-          }
-        }
-        .animate-float {
-          animation: float 6s infinite ease-in-out;
-        }
-        .animate-float-delayed {
-          animation: float 6s infinite ease-in-out;
-          animation-delay: 3s;
-        }
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in {
-          animation: fade-in 1s ease-out;
-        }
-        .words-rotate {
-          animation: rotate 8s cubic-bezier(0.4, 0.1, 0.2, 1) infinite;
-        }
-        @keyframes rotate {
-          0%,
-          32% {
-            transform: translateY(0);
-          }
-          35%,
-          65% {
-            transform: translateY(-1.2em);
-          }
-          68%,
-          98% {
-            transform: translateY(-2.4em);
-          }
-          100% {
-            transform: translateY(-3.6em);
-          }
-        }
-      `}</style>
     </div>
   );
 }
