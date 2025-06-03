@@ -56,15 +56,15 @@ export default function Hero() {
             <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 text-base text-gray-600 max-w-4xl mx-auto">
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
-                <span>agents IA sur mesure </span>
+                <span>Agents IA sur mesure </span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
-                <span>Décidez quand l'humain intervient</span>
+                <span>Human in the loop à tout moment </span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
-                <span>données 100% privées</span>
+                <span>données 100% privées et sécurisées </span>
               </div>
             </div>
           </div>
