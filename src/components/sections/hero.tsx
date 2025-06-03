@@ -17,7 +17,7 @@ export default function Hero() {
             <div className="max-w-[680px] mx-auto">
               <p className="text-xl text-gray-700 leading-relaxed mb-3">
                 Elles organisent, anticipent et soulagent votre équipe.
-                Une solution pensée pour les petites équipes exigeantes.
+                Des solutions pensées pour les petites équipes exigeantes.
               </p>
             </div>
 
