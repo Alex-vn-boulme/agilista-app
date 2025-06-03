@@ -37,7 +37,7 @@ export default function Hero() {
               </div>
               <div className="inline-flex items-center px-6 py-2 rounded-full bg-[#7C3AED]/10 text-[#7C3AED] font-medium transition-all hover:bg-[#7C3AED]/20 hover:scale-105">
                 <span className="mr-2">⚙️</span>
-Support admin
+                Support admin
               </div>
             </div>
 
@@ -53,20 +53,18 @@ Support admin
             </div>
 
             {/* Features avec icônes améliorées */}
-            <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 text-lg text-gray-900 font-bold">
+            <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 text-base text-gray-600 max-w-4xl mx-auto">
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
-                <span>Automatisations complexes et sur-mesure</span>
+                <span>agents IA</span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
-                <span>
-                  Vous gardez la main et décidez quand l'humain intervient.
-                </span>
+                <span>Décidez quand l'humain intervient</span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
-                <span>Données 100 % privées</span>
+                <span>données 100% privées</span>
               </div>
             </div>
           </div>
