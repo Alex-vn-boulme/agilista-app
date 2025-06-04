@@ -60,7 +60,7 @@ export default function Hero() {
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
-                <span>Human in the loop à tout moment </span>
+                <span>Contrôle humain intégré, pas imposé </span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-green-600 text-2xl">✅</span>
